@@ -1,0 +1,111 @@
+{
+  "subagents": [
+    {
+      "id": "marcus-orchestrator",
+      "role": "Executive orchestrator",
+      "primary_skills": [
+        "wfg-approval-coordinator"
+      ],
+      "external_actions": "none_without_gate"
+    },
+    {
+      "id": "capture-manager",
+      "role": "Opportunity fit, schedule, and bid/no-bid analysis",
+      "primary_skills": [
+        "wfg-sam-brief",
+        "wfg-approval-coordinator"
+      ],
+      "external_actions": "none"
+    },
+    {
+      "id": "solicitation-reader",
+      "role": "Extract scope, clauses, dates, attachments, amendments, and source map",
+      "primary_skills": [
+        "wfg-solicitation-analyst"
+      ],
+      "external_actions": "none"
+    },
+    {
+      "id": "bid-packet-builder",
+      "role": "Create subcontractor-facing bid packet and internal review bundle",
+      "primary_skills": [
+        "wfg-subcontractor-bid-packet"
+      ],
+      "external_actions": "none"
+    },
+    {
+      "id": "subcontractor-scout",
+      "role": "Find and score subcontractor candidates",
+      "primary_skills": [
+        "wfg-subcontractor-scout"
+      ],
+      "external_actions": "none"
+    },
+    {
+      "id": "subcontractor-validator",
+      "role": "Verify fit, credentials, service area, and contact quality",
+      "primary_skills": [
+        "wfg-subcontractor-crm"
+      ],
+      "external_actions": "none"
+    },
+    {
+      "id": "outreach-coordinator",
+      "role": "Draft quote request emails and Gate 2 outreach approval packets",
+      "primary_skills": [
+        "wfg-outreach-drafter",
+        "wfg-approval-coordinator"
+      ],
+      "external_actions": "drafts_only_before_gate2"
+    },
+    {
+      "id": "estimator",
+      "role": "Normalize quotes, scope gaps, exclusions, bid tabs, and basis-of-bid",
+      "primary_skills": [
+        "wfg-estimating"
+      ],
+      "external_actions": "none"
+    },
+    {
+      "id": "compliance-librarian",
+      "role": "Labor, insurance, bonds, representations, SAM/FAR compliance extraction",
+      "primary_skills": [
+        "wfg-compliance-review"
+      ],
+      "external_actions": "none"
+    },
+    {
+      "id": "proposal-compiler",
+      "role": "Assemble proposal package and Gate 4 final submission approval packet",
+      "primary_skills": [
+        "wfg-proposal-assembler"
+      ],
+      "external_actions": "none"
+    },
+    {
+      "id": "red-team-reviewer",
+      "role": "Find contradictions, missing attachments, weak assumptions, and polish issues",
+      "primary_skills": [
+        "wfg-red-team-review"
+      ],
+      "external_actions": "none"
+    },
+    {
+      "id": "drive-librarian",
+      "role": "Keep local files and Google Drive review folders clean, indexed, and reviewable",
+      "primary_skills": [
+        "wfg-drive-review-hub"
+      ],
+      "external_actions": "drive_private_only"
+    },
+    {
+      "id": "approval-coordinator",
+      "role": "Create approval packets, send Telegram buttons, reconcile decisions, and trigger workflow pump",
+      "primary_skills": [
+        "wfg-approval-coordinator"
+      ],
+      "external_actions": "approval_messages_only"
+    }
+  ],
+  "rule": "Skills are reusable procedures. Subagents are execution contexts with role prompts, goals, boundaries, and assigned skills. Do not replace subagent profiles with skill files."
+}

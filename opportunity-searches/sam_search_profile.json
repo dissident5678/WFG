@@ -1,0 +1,110 @@
+{
+  "profile_name": "WFG starter services profile",
+  "version": "2.0",
+  "updated": "2026-06-10",
+  "notes": "Editable search/scoring profile used by sam_morning_opportunity_brief.py and sync_sam_opportunity_tracker.py. Edit this file instead of the scripts. The wfg-sam-api-watcher skill also references this profile.",
+
+  "api": {
+    "posted_lookback_days": 3,
+    "limit_per_request": 1000,
+    "max_search_requests_per_run": 5,
+    "fetch_descriptions_for_top": 4,
+    "ptype": "o,k,r,p",
+    "rate_limit_note": "Non-federal personal SAM.gov API keys are rate-limited to roughly 10 requests/day. Searches use 2-4 requests, description fetches use up to fetch_descriptions_for_top more. Keep the total under 10. Verify your account's actual limit at https://open.gsa.gov/api/get-opportunities-public-api/"
+  },
+
+  "value_band": {
+    "ideal_min": 10000,
+    "ideal_max": 250000,
+    "hard_max": 500000,
+    "standard_legal_sat": 350000,
+    "construction_bond_flag_threshold": 150000,
+    "note": "standard_legal_sat 350000 is the current legal Simplified Acquisition Threshold; WFG preferred beginner range remains 10000-250000 and internal hard cap remains 500000. Construction at/above 150000 triggers Miller Act performance/payment bonds."
+  },
+
+  "deadlines": {
+    "drop_below_days": 7,
+    "urgent_below_days": 14,
+    "note": "Small RFQs often post with 7-14 day windows. With a pre-built sub bench WFG can quote in 5-7 days, so do not throw these away; mark them URGENT instead."
+  },
+
+  "naics_core": {
+    "561720": "Janitorial services",
+    "561730": "Landscaping / grounds maintenance",
+    "561710": "Pest control / exterminating",
+    "561740": "Carpet and upholstery cleaning",
+    "561790": "Other building services (pressure washing, chimney, gutter)",
+    "561210": "Facilities support services",
+    "562111": "Solid waste collection",
+    "562991": "Septic / portable sanitation services",
+    "562998": "Misc waste management services",
+    "238140": "Masonry",
+    "238150": "Glass and glazing",
+    "238160": "Roofing",
+    "238210": "Electrical contractors",
+    "238220": "Plumbing / HVAC contractors",
+    "238310": "Drywall and insulation",
+    "238320": "Painting and wall covering",
+    "238330": "Flooring",
+    "238340": "Tile and terrazzo",
+    "238350": "Finish carpentry",
+    "238390": "Other building finishing",
+    "238910": "Site preparation",
+    "238990": "All other specialty trades (fencing, paving maintenance, etc.)",
+    "484110": "General freight trucking, local",
+    "484210": "Used household and office goods moving",
+    "811310": "Commercial machinery repair and maintenance"
+  },
+
+  "naics_watch": {
+    "236220": "Commercial building construction (often above starter size; watch for small repair jobs)",
+    "236118": "Residential remodelers",
+    "237310": "Highway/street construction (watch for small striping/repair scopes)",
+    "561612": "Security guard services (state licensing required; verify before pursuing)",
+    "811210": "Electronic equipment repair",
+    "488490": "Other support activities for road transportation"
+  },
+
+  "psc_prefixes_core": ["S2", "Z1", "Z2"],
+  "psc_prefixes_watch": ["J0", "Z3"],
+  "psc_note": "S2xx = housekeeping (custodial, guard, landscaping, trash). Z1xx/Z2xx = maintenance/repair/alteration of real property. J0xx = maintenance/repair of equipment. Z3xx = restoration.",
+
+  "title_keywords_strong": [
+    "janitorial", "custodial", "grounds maintenance", "landscaping", "lawn",
+    "mowing", "snow removal", "snow plowing", "pest control", "pressure washing",
+    "window cleaning", "trash removal", "refuse", "portable toilet", "portable restroom",
+    "painting", "flooring", "carpet", "fencing", "fence", "tree trimming",
+    "tree removal", "moving services", "relocation services", "hauling",
+    "debris removal", "roof repair", "door repair", "signage", "striping",
+    "grass cutting", "mulching", "janitor"
+  ],
+  "title_keywords_weak": [
+    "maintenance", "repair", "installation", "inspection", "removal",
+    "replacement", "cleaning", "renovation"
+  ],
+
+  "risk_keywords": [
+    "top secret", "secret clearance", "security clearance", "classified",
+    "cui", "itar", "export controlled", "design-build", "sole source",
+    "j&a", "brand name only"
+  ],
+  "bond_keywords": ["performance bond", "payment bond", "bid bond", "miller act", "bonding"],
+  "wage_keywords": ["wage determination", "service contract act", "davis-bacon", "collective bargaining"],
+
+  "set_asides": {
+    "bid_ok_codes": ["SBA", "SBP"],
+    "watch_only_codes": ["SDVOSBC", "SDVOSBS", "WOSB", "WOSBSS", "EDWOSB", "EDWOSBSS", "8A", "8AN", "HZC", "HZS", "VSA", "VSS", "ISBEE"],
+    "note": "WFG cannot bid certification-gated set-asides (WOSB/SDVOSB/8a/HUBZone) until certifications are verified and approved. They are tracked in the WATCH bucket as future pipeline once WOSB/VOSB paths are confirmed."
+  },
+
+  "domestic_only": true,
+  "region_boost_states": ["MD", "VA", "DC", "PA", "DE", "WV"],
+
+  "brief": {
+    "max_pursue": 10,
+    "max_urgent": 5,
+    "max_sources_sought": 5,
+    "max_watch": 10,
+    "min_score_pursue": 30
+  }
+}

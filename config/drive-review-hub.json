@@ -1,0 +1,17 @@
+{
+  "name": "WFG Google Drive Review Hub",
+  "env_var": "WFG_DRIVE_ROOT_FOLDER_ID",
+  "default_root_folder_name": "WFG Review Hub",
+  "folder_tree": [
+    "WFG Review Hub/SAM Opportunities/<YEAR>/<OPPORTUNITY>/01 Source Docs",
+    "WFG Review Hub/SAM Opportunities/<YEAR>/<OPPORTUNITY>/02 Internal Review",
+    "WFG Review Hub/SAM Opportunities/<YEAR>/<OPPORTUNITY>/03 Subcontractor Packet",
+    "WFG Review Hub/SAM Opportunities/<YEAR>/<OPPORTUNITY>/04 Approvals",
+    "WFG Review Hub/SAM Opportunities/<YEAR>/<OPPORTUNITY>/05 Draft Emails",
+    "WFG Review Hub/SAM Opportunities/<YEAR>/<OPPORTUNITY>/06 Quotes Received",
+    "WFG Review Hub/SAM Opportunities/<YEAR>/<OPPORTUNITY>/07 Proposal Package",
+    "WFG Review Hub/SAM Opportunities/<YEAR>/<OPPORTUNITY>/08 Submission Proof"
+  ],
+  "sharing_policy": "Private by default. Do not create public links. External sharing requires exact approval of file, recipient, and version.",
+  "review_manifest": "Each generated packet writes subcontractor_bid_packet/review_manifest.json with local paths, hashes, readiness, and Drive links when available."
+}

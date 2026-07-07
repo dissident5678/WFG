@@ -1,0 +1,21 @@
+{
+  "api_pages": 0,
+  "batch_id": "sam-20260701-063526-676757",
+  "brief_status": "pending",
+  "code_config_version": "214bd1dbd556276d",
+  "created_at": "2026-07-01T10:35:26+00:00",
+  "enrichment_status": "pending",
+  "errors": [
+    "HTTPError: HTTP Error 503: Service Unavailable"
+  ],
+  "fetch_completed_at": null,
+  "fetch_started_at": "2026-07-01T10:40:26+00:00",
+  "fetch_status": "failed",
+  "raw_files": [],
+  "records": 0,
+  "snapshot_file": "/home/nick/workspace/wfg-gov-contracting-v2/opportunity-searches/sam-api/batches/sam-20260701-063526-676757/seen-keys.json",
+  "snapshot_status": "completed",
+  "tracker_sync_status": "pending",
+  "updated_at": "2026-07-01T10:40:42+00:00",
+  "warnings": []
+}

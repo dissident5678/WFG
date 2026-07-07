@@ -1,0 +1,106 @@
+# Wright Foster Group LLC verified directive config for Hermes Bid Engine Phase 1
+# Created from existing local WFG project records only. Unknown/missing facts are marked UNKNOWN/UNVERIFIED.
+version: 2
+updated_at: "2026-06-24"
+phase4_verification:
+  verification_date: "2026-06-24"
+  verification_report: "/home/nick/workspace/gov-contracting/docs/phase4-company-directive-verification.md"
+  authoritative_local_sources_reviewed:
+    - "README.md"
+    - "company-setup.md"
+    - "business-names.md"
+    - "AGENTS.md"
+  note: "Supported local facts were verified against project records; registration, certifications, insurance, bonding, UEI, CAGE, EIN, banking, and licenses remain UNVERIFIED unless separately documented."
+company:
+  legal_name: "Wright Foster Group LLC"
+  legal_entity_state: "Maryland"
+  domain: "wrightfostergroup.com"
+  registration_status: "UNVERIFIED — project README says LLC registration and domain purchase are being handled this week"
+  ownership_structure: "UNVERIFIED — current plan only; do not claim in bids/certifications"
+  managing_member: "UNVERIFIED"
+  certifications_status_note: "Do not claim WOSB, EDWOSB, VOSB, SDVOSB, 8(a), HUBZone, or other certification until verified records explicitly support it."
+legal_acquisition_thresholds:
+  standard_simplified_acquisition_threshold_usd: 350000
+  note: "Legal threshold is separate from WFG starter preferences and internal caps."
+wfg_opportunity_preferences:
+  preferred_beginner_range_usd:
+    min: 10000
+    max: 250000
+  internal_hard_cap_usd: 500000
+  construction_bond_flag_threshold_usd: 150000
+verified_active_certifications: []
+verified_naics_capability_list:
+  - {code: "561720", description: "Janitorial services"}
+  - {code: "561730", description: "Landscaping / grounds maintenance"}
+  - {code: "561710", description: "Pest control / exterminating"}
+  - {code: "561740", description: "Carpet and upholstery cleaning"}
+  - {code: "561790", description: "Other building services"}
+  - {code: "561210", description: "Facilities support services"}
+  - {code: "562111", description: "Solid waste collection"}
+  - {code: "562991", description: "Septic / portable sanitation services"}
+  - {code: "562998", description: "Misc waste management services"}
+  - {code: "238140", description: "Masonry"}
+  - {code: "238150", description: "Glass and glazing"}
+  - {code: "238160", description: "Roofing"}
+  - {code: "238210", description: "Electrical contractors"}
+  - {code: "238220", description: "Plumbing / HVAC contractors"}
+  - {code: "238310", description: "Drywall and insulation"}
+  - {code: "238320", description: "Painting and wall covering"}
+  - {code: "238330", description: "Flooring"}
+  - {code: "238340", description: "Tile and terrazzo"}
+  - {code: "238350", description: "Finish carpentry"}
+  - {code: "238390", description: "Other building finishing"}
+  - {code: "238910", description: "Site preparation"}
+  - {code: "238990", description: "All other specialty trades"}
+  - {code: "484110", description: "General freight trucking, local"}
+  - {code: "484210", description: "Used household and office goods moving"}
+  - {code: "811310", description: "Commercial machinery repair and maintenance"}
+watch_naics_not_verified_as_core:
+  - "236220"
+  - "236118"
+  - "237310"
+  - "561612"
+  - "811210"
+  - "488490"
+geographic_preferences:
+  domestic_only: true
+  preferred_states: ["MD", "VA", "DC", "PA", "DE", "WV"]
+minimum_response_time:
+  normal_tracker_min_days: 14
+  urgent_telegram_only_floor_days: 7
+  note: "Under normal minimum should be clearly labeled urgent rather than silently hidden."
+insurance_and_bonding:
+  general_liability: "UNKNOWN"
+  workers_comp: "UNKNOWN"
+  automobile: "UNKNOWN"
+  bonding_capacity: "UNKNOWN"
+  surety_relationship: "UNKNOWN"
+authorized_system_operators:
+  - "Nick"
+  - "Marcus (AI operations assistant; internal drafting/analysis only)"
+authorized_business_approvers:
+  - "UNVERIFIED — explicit authorized-human approval required; current project says 51% owner will retain final authority once verified"
+pre_award_approval_gates:
+  - "Pursue or pass"
+  - "Authorize external subcontractor outreach"
+  - "Approve basis-of-bid subcontractors and final price"
+  - "Approve the final submission package"
+actions_always_requiring_human_authorization:
+  - "Sending external communications or contacting subcontractors/agencies/suppliers/third parties"
+  - "Approving pursuit/pass decisions as binding company decisions"
+  - "Approving final bid price or basis-of-bid subcontractors"
+  - "Submitting proposals, quotes, responses, representations, or certifications"
+  - "Accepting awards, contracts, purchase orders, modifications, or notices to proceed"
+  - "Signing contracts, modifications, subcontracts, or certifications"
+  - "Issuing subcontracts"
+  - "Spending money or committing WFG financially"
+  - "Beginning contract performance"
+  - "Uploading sensitive information externally"
+prohibited_assumptions:
+  - "Wright Builders"
+  - "AIRO Automation"
+  - "Claimed WOSB/EDWOSB/VOSB/SDVOSB status without verified records"
+  - "541xxx NAICS codes without verified WFG records"
+  - "Unverified Managing Member"
+  - "Unverified ownership/control as an active certification"
+  - "Claude-specific model assumptions"

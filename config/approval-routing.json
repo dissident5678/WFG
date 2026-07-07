@@ -1,0 +1,98 @@
+{
+  "aliases": {
+    "bid_no_bid": "bid_no_bid",
+    "business_admin": "business_admin",
+    "compliance": "compliance",
+    "intake": "opportunity_intake",
+    "outreach": "outreach",
+    "performance": "performance",
+    "price": "price",
+    "pricing": "price",
+    "proposal": "proposal",
+    "pursue": "opportunity_intake",
+    "submission": "submission",
+    "system_ops": "system_ops"
+  },
+  "approval_topic": "telegram:-1003889564123:295",
+  "description": "WFG approval-to-operational-topic routing. WFG Approvals remains the decision hub; accepted approvals should trigger factual follow-up updates in the appropriate operational topic.",
+  "message_rule": "Post only factual process status. Do not claim outreach/submission occurred until the downstream action actually ran and was verified.",
+  "opportunity_briefs": {
+    "label": "WFG Opportunity Briefs",
+    "status": "verified",
+    "target": "telegram:-1003889564123:104",
+    "thread_id": "104"
+  },
+  "routes": {
+    "bid_no_bid": {
+      "label": "Bid / No-Bid",
+      "purpose": "Beginner-fit scoring, eligibility, time/risk assessment, and pursue/pass/watch recommendations.",
+      "status": "verified",
+      "target": "telegram:-1003889564123:576",
+      "thread_id": "576"
+    },
+    "business_admin": {
+      "label": "Business Admin / Company Setup",
+      "purpose": "LLC/admin, SAM.gov/UEI, insurance/bonding, domain/email, bank/EIN/accounting, and certification planning.",
+      "status": "verified",
+      "target": "telegram:-1003889564123:592",
+      "thread_id": "592"
+    },
+    "compliance": {
+      "label": "Solicitation / Compliance",
+      "purpose": "Solicitation reading, compliance matrices, clauses, forms, deadlines, instructions, and amendments.",
+      "status": "verified",
+      "target": "telegram:-1003889564123:578",
+      "thread_id": "578"
+    },
+    "opportunity_intake": {
+      "label": "Opportunity Intake / Capture",
+      "purpose": "New SAM links, selected opportunities, intake status, source docs, and opportunity folders.",
+      "status": "verified",
+      "target": "telegram:-1003889564123:574",
+      "thread_id": "574"
+    },
+    "outreach": {
+      "label": "Subcontractor Sourcing",
+      "purpose": "Local subcontractor candidates, quote request drafts, outreach approval follow-up, quote tracking, and verification status.",
+      "status": "verified",
+      "target": "telegram:-1003889564123:580",
+      "thread_id": "580"
+    },
+    "performance": {
+      "label": "Contract Performance / Project Controls",
+      "purpose": "Post-award kickoff, schedule tracking, RFIs, changes, closeout, invoices, and subcontractor performance.",
+      "status": "verified",
+      "target": "telegram:-1003889564123:588",
+      "thread_id": "588"
+    },
+    "price": {
+      "label": "Pricing",
+      "purpose": "Quote leveling, markup/contingency, limitations-on-subcontracting checks, pricing worksheet status, and final-price approval follow-up.",
+      "status": "verified",
+      "target": "telegram:-1003889564123:582",
+      "thread_id": "582"
+    },
+    "proposal": {
+      "label": "Proposal",
+      "purpose": "Technical proposal drafts, capabilities sections, past-performance handling, and proposal package assembly.",
+      "status": "verified",
+      "target": "telegram:-1003889564123:584",
+      "thread_id": "584"
+    },
+    "submission": {
+      "label": "Submission",
+      "purpose": "Final submission checklist, portal/email instructions, submission approval follow-up, and proof archive.",
+      "status": "verified",
+      "target": "telegram:-1003889564123:586",
+      "thread_id": "586"
+    },
+    "system_ops": {
+      "label": "WFG System / Marcus Ops",
+      "purpose": "Automation status, cron jobs, routing tests, Hermes/Kanban issues, system errors, and blockers.",
+      "status": "verified",
+      "target": "telegram:-1003889564123:594",
+      "thread_id": "594"
+    }
+  },
+  "updated_at": "2026-06-26T20:06:45.387824+00:00"
+}

@@ -1,0 +1,22 @@
+# Secrets and credentials — never commit (plan Section 13, risk 12)
+.env
+.env.*
+*.pem
+*.key
+credentials*.json
+token*.json
+
+# Runtime state: SQLite DB contains vendor contact data; pump runs are operational logs
+state/
+
+# Subcontractor CRM exports contain personal contact details (plan: GitHub exclusions)
+subcontractors/subcontractor_master.csv
+subcontractors/subcontractor_master.md
+
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# OS
+.DS_Store

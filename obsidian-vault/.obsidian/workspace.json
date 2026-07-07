@@ -1,0 +1,220 @@
+{
+  "main": {
+    "id": "2409b064d61a51c2",
+    "type": "split",
+    "children": [
+      {
+        "id": "22644bfb1de0d4b7",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "9f2392a284f310dc",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "01-Opportunities/notice-22866a1f0a9e40bb8c417e3621c928a1-dafb-integrated-solid-waste-management.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "notice-22866a1f0a9e40bb8c417e3621c928a1-dafb-integrated-solid-waste-management"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "42e97a40fc417f4c",
+    "type": "split",
+    "children": [
+      {
+        "id": "c811aef1581ea911",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "c9f16999ef2e16cb",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "df1bb30ad4fc7d3d",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "2e7230bd3d533da1",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "4d4386852634178c",
+    "type": "split",
+    "children": [
+      {
+        "id": "fc85dc63748ca0d3",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "3d416d95d8b32d7d",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "01-Opportunities/notice-22866a1f0a9e40bb8c417e3621c928a1-dafb-integrated-solid-waste-management.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for notice-22866a1f0a9e40bb8c417e3621c928a1-dafb-integrated-solid-waste-management"
+            }
+          },
+          {
+            "id": "0347dfcaf9c02001",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "01-Opportunities/notice-22866a1f0a9e40bb8c417e3621c928a1-dafb-integrated-solid-waste-management.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from notice-22866a1f0a9e40bb8c417e3621c928a1-dafb-integrated-solid-waste-management"
+            }
+          },
+          {
+            "id": "480f58f78e63e87c",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "d6b8515b81bd98ef",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "All properties"
+            }
+          },
+          {
+            "id": "459e24a82ba281ab",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "01-Opportunities/notice-22866a1f0a9e40bb8c417e3621c928a1-dafb-integrated-solid-waste-management.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline of notice-22866a1f0a9e40bb8c417e3621c928a1-dafb-integrated-solid-waste-management"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "bases:Create new base": false
+    }
+  },
+  "active": "9f2392a284f310dc",
+  "lastOpenFiles": [
+    "05-Emails/2026/2026-07-07-metro-ag-waste-inc-kramer-family-companies-quote-request-fit-check-scott-afb-sludge-removal-metro-ag-waste-in.md",
+    "05-Emails/2026/2026-07-07-liquid-environmental-solutions-st-louis-disposal-solutions-quote-request-fit-check-scott-afb-sludge-removal-l.md",
+    "05-Emails/2026/2026-07-07-valicor-environmental-services-st-louis-quote-request-fit-check-scott-afb-sludge-removal-valicor-environmenta.md",
+    "05-Emails/2026/2026-07-07-v1-environmental-quote-request-fit-check-scott-afb-sludge-removal-v1-environmental.md",
+    "05-Emails/2026/2026-07-07-cs-tree-services-inc-quote-request-usace-jordan-lake-hazard-tree-and-vegetation-removal-moncure-new-hill-nc.md",
+    "05-Emails/2026/2026-07-07-j-d-tree-pros-inc-of-apex-quote-request-usace-jordan-lake-hazard-tree-and-vegetation-removal-moncure-new-hill.md",
+    "05-Emails/2026/2026-07-07-creekside-forestry-mulching-quote-request-usace-jordan-lake-hazard-tree-and-vegetation-removal-moncure-new-hi.md",
+    "05-Emails/2026/2026-07-07-arbormax-tree-service-quote-request-usace-jordan-lake-hazard-tree-and-vegetation-removal-moncure-new-hill-nc.md",
+    "04-Contacts/contact-58-to-verify-kapok-tree-service.md",
+    "04-Contacts/contact-54-estimating-contact-to-verify-j-d-tree-pros-inc-of-apex.md",
+    "04-Contacts/contact-55-estimating-contact-to-verify-creekside-forestry-mulching.md",
+    "04-Contacts/contact-59-to-verify-central-carolina-land-management-llc.md",
+    "04-Contacts/contact-57-to-verify-carlos-tree-service.md",
+    "04-Contacts/contact-53-paige-estimating-contact-to-verify-cs-tree-services-inc.md",
+    "04-Contacts/contact-60-to-verify-broadleaf-tree-and-shrub.md",
+    "04-Contacts/contact-56-estimating-contact-to-verify-arbormax-tree-service.md",
+    "03-Companies/kapok-tree-service.md",
+    "03-Companies/j-d-tree-pros-inc-of-apex.md",
+    "03-Companies/creekside-forestry-mulching.md",
+    "03-Companies/central-carolina-land-management-llc.md",
+    "03-Companies/carlos-tree-service.md",
+    "03-Companies/cs-tree-services-inc.md",
+    "03-Companies/broadleaf-tree-and-shrub.md",
+    "03-Companies/arbormax-tree-service.md",
+    "01-Opportunities/notice-7ac9f9cded1a47e38a4f759e8ac4a1da-janitorial-services-for-usda-ars-frederick-marylan.md",
+    "04-Contacts/contact-20-contact-fenix-striping-sealing-llc.md",
+    "99-Attachments",
+    "99-Attachments/archived-generated-duplicates-20260707T114321Z/04-Contacts",
+    "99-Attachments/archived-generated-duplicates-20260707T114321Z/03-Companies",
+    "99-Attachments/archived-generated-duplicates-20260707T114321Z/01-Opportunities",
+    "99-Attachments/archived-generated-duplicates-20260707T114321Z"
+  ]
+}

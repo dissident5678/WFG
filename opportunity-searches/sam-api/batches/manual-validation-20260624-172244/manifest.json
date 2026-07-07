@@ -1,0 +1,31 @@
+{
+  "api_pages": 4,
+  "batch_id": "manual-validation-20260624-172244",
+  "brief_status": "completed",
+  "created_at": "2026-06-24T21:22:44+00:00",
+  "enrichment_status": "completed",
+  "errors": [],
+  "fetch_completed_at": "2026-06-24T21:22:52+00:00",
+  "fetch_started_at": "2026-06-24T21:22:46+00:00",
+  "fetch_status": "completed",
+  "legacy_raw_files": [
+    "/home/nick/workspace/wfg-gov-contracting-v2/opportunity-searches/sam-api/raw-manual-validation-20260624-172244-p1.json",
+    "/home/nick/workspace/wfg-gov-contracting-v2/opportunity-searches/sam-api/raw-manual-validation-20260624-172244-p2.json",
+    "/home/nick/workspace/wfg-gov-contracting-v2/opportunity-searches/sam-api/raw-manual-validation-20260624-172244-p3.json",
+    "/home/nick/workspace/wfg-gov-contracting-v2/opportunity-searches/sam-api/raw-manual-validation-20260624-172244-p4.json"
+  ],
+  "raw_files": [
+    "raw-p1.json",
+    "raw-p2.json",
+    "raw-p3.json",
+    "raw-p4.json"
+  ],
+  "records": 3342,
+  "snapshot_status": "pending",
+  "tracker_sync_status": "running",
+  "updated_at": "2026-06-24T21:23:53+00:00",
+  "validation_fetch_output_tail": "",
+  "validation_fetch_returncode": 0,
+  "validation_only": true,
+  "warnings": []
+}

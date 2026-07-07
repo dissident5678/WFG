@@ -1,0 +1,28 @@
+{
+  "api_pages": 3,
+  "batch_id": "sam-20260703-063541-652533",
+  "brief_status": "completed",
+  "code_config_version": "214bd1dbd556276d",
+  "created_at": "2026-07-03T10:35:41+00:00",
+  "enrichment_status": "completed",
+  "errors": [],
+  "fetch_completed_at": "2026-07-03T10:40:50+00:00",
+  "fetch_started_at": "2026-07-03T10:40:41+00:00",
+  "fetch_status": "completed",
+  "legacy_raw_files": [
+    "/home/nick/workspace/wfg-gov-contracting-v2/opportunity-searches/sam-api/raw-20260703-063541-652533-p1.json",
+    "/home/nick/workspace/wfg-gov-contracting-v2/opportunity-searches/sam-api/raw-20260703-063541-652533-p2.json",
+    "/home/nick/workspace/wfg-gov-contracting-v2/opportunity-searches/sam-api/raw-20260703-063541-652533-p3.json"
+  ],
+  "raw_files": [
+    "raw-p1.json",
+    "raw-p2.json",
+    "raw-p3.json"
+  ],
+  "records": 2816,
+  "snapshot_file": "/home/nick/workspace/wfg-gov-contracting-v2/opportunity-searches/sam-api/batches/sam-20260703-063541-652533/seen-keys.json",
+  "snapshot_status": "completed",
+  "tracker_sync_status": "completed",
+  "updated_at": "2026-07-03T11:05:47+00:00",
+  "warnings": []
+}
