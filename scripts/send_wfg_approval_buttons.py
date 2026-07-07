@@ -141,10 +141,16 @@ def main() -> int:
         'text': text,
         'disable_web_page_preview': True,
         'reply_markup': {
-            'inline_keyboard': [[
-                {'text': '✅ Approve', 'callback_data': f'wfg:approve:{approval_id}'},
-                {'text': '❌ Deny', 'callback_data': f'wfg:deny:{approval_id}'},
-            ]]
+            'inline_keyboard': [
+                [
+                    {'text': '✅ Approve', 'callback_data': f'wfg:approve:{approval_id}'},
+                    {'text': '❌ Deny', 'callback_data': f'wfg:deny:{approval_id}'},
+                ],
+                [
+                    {'text': '✏️ Revise', 'callback_data': f'wfg:revise:{approval_id}'},
+                    {'text': '⏸ Hold', 'callback_data': f'wfg:hold:{approval_id}'},
+                ],
+            ]
         },
     }
     if args.thread_id:

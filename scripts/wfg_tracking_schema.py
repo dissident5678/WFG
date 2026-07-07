@@ -145,9 +145,128 @@ def ensure_tracking_schema(c: sqlite3.Connection | None = None) -> dict[str, Any
         CREATE INDEX IF NOT EXISTS idx_email_response_items_sub_opp ON email_response_items(subcontractor_id, dedupe_key);
         """
     )
+    ensure_phase2_workflow_schema(c)
     if own:
         c.commit(); c.close()
     return {"ok": True, "db": str(DB)}
+
+
+def ensure_phase2_workflow_schema(c: sqlite3.Connection) -> None:
+    """Consensus plan Section 5 tables: workflow_tasks is the source-of-truth
+    task queue (Kanban is a tolerant mirror), external_action_ledger is the
+    duplicate-outreach guard, artifact_index binds artifacts to versions/hashes.
+    Safe to run repeatedly."""
+    c.executescript(
+        """
+        CREATE TABLE IF NOT EXISTS workflow_tasks(
+          task_id INTEGER PRIMARY KEY AUTOINCREMENT,
+          dedupe_key TEXT,
+          opportunity_folder TEXT,
+          role_id TEXT,
+          task_type TEXT NOT NULL,
+          current_state TEXT NOT NULL DEFAULT 'queued',
+          priority INTEGER DEFAULT 0,
+          due_at TEXT,
+          input_json TEXT,
+          output_json TEXT,
+          idempotency_key TEXT UNIQUE,
+          created_at TEXT NOT NULL,
+          started_at TEXT,
+          heartbeat_at TEXT,
+          finished_at TEXT,
+          error TEXT,
+          next_gate TEXT,
+          kanban_task_id TEXT,
+          kanban_mirror_status TEXT DEFAULT 'not_attempted',
+          environment TEXT DEFAULT 'production'
+        );
+        CREATE TABLE IF NOT EXISTS external_action_ledger(
+          action_id INTEGER PRIMARY KEY AUTOINCREMENT,
+          dedupe_key TEXT,
+          action_type TEXT NOT NULL,
+          recipient_key TEXT,
+          recipient_email TEXT,
+          artifact_version TEXT,
+          artifact_hash TEXT,
+          approval_id TEXT,
+          status TEXT NOT NULL,
+          created_at TEXT NOT NULL,
+          executed_at TEXT,
+          proof_path TEXT,
+          external_id TEXT,
+          idempotency_key TEXT UNIQUE,
+          sources_json TEXT,
+          needs_human_review INTEGER DEFAULT 0,
+          environment TEXT DEFAULT 'production'
+        );
+        CREATE TABLE IF NOT EXISTS artifact_index(
+          artifact_id INTEGER PRIMARY KEY AUTOINCREMENT,
+          dedupe_key TEXT,
+          artifact_type TEXT NOT NULL,
+          audience TEXT,
+          local_path TEXT,
+          drive_file_id TEXT,
+          drive_web_view_link TEXT,
+          version TEXT,
+          sha256 TEXT,
+          created_at TEXT NOT NULL,
+          superseded_at TEXT,
+          environment TEXT DEFAULT 'production'
+        );
+        CREATE INDEX IF NOT EXISTS idx_workflow_tasks_state ON workflow_tasks(current_state);
+        CREATE INDEX IF NOT EXISTS idx_workflow_tasks_opp ON workflow_tasks(dedupe_key);
+        CREATE INDEX IF NOT EXISTS idx_ledger_opp_recipient ON external_action_ledger(dedupe_key, recipient_key);
+        CREATE INDEX IF NOT EXISTS idx_artifact_index_opp ON artifact_index(dedupe_key, artifact_type);
+        """
+    )
+    add_column(c, "approvals", "gate_id", "TEXT")
+
+
+TASK_STATES = (
+    "queued", "claimed", "running", "blocked", "waiting_approval",
+    "approved_to_continue", "completed", "failed_retryable", "failed_terminal",
+    "cancelled", "superseded",
+)
+
+
+def recipient_key_for_email(email: str) -> str:
+    return (email or "").strip().lower()
+
+
+def ledger_blocks_send(c: sqlite3.Connection, dedupe_key: str, recipient_email: str) -> dict[str, Any] | None:
+    """Return the blocking ledger row if this opportunity/recipient pair was
+    already contacted (including historical_sent_proof backfill rows). A prior
+    contact for a *different* opportunity never blocks (plan Section 5)."""
+    rk = recipient_key_for_email(recipient_email)
+    if not rk:
+        return None
+    r = c.execute(
+        """select * from external_action_ledger
+            where dedupe_key=? and recipient_key=?
+              and status in ('executed','historical_sent_proof')
+            order by action_id asc limit 1""",
+        (dedupe_key, rk),
+    ).fetchone()
+    return dict(r) if r else None
+
+
+def record_ledger_action(c: sqlite3.Connection, **fields: Any) -> int | None:
+    """Insert a ledger row idempotently (by idempotency_key). Returns rowid or
+    None when the key already exists."""
+    cols = [
+        "dedupe_key", "action_type", "recipient_key", "recipient_email",
+        "artifact_version", "artifact_hash", "approval_id", "status",
+        "created_at", "executed_at", "proof_path", "external_id",
+        "idempotency_key", "sources_json", "needs_human_review", "environment",
+    ]
+    row = {k: fields.get(k) for k in cols}
+    row["created_at"] = row.get("created_at") or now()
+    row["environment"] = row.get("environment") or "production"
+    cur = c.execute(
+        f"insert or ignore into external_action_ledger({','.join(cols)}) values({','.join('?' for _ in cols)})",
+        [row[k] for k in cols],
+    )
+    return cur.lastrowid if cur.rowcount else None
 
 
 def opportunity_dedupe_for_folder(c: sqlite3.Connection, folder: str) -> str:

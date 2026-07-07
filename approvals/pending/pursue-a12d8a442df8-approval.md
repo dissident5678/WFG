@@ -1,7 +1,7 @@
 # APPROVAL NEEDED — Phase 4 Approval Fixture
 
-Approval ID: appr_V1YQ5hMw89MvDyDC
-Created at: 2026-07-07T17:18:44+00:00
+Approval ID: appr_MpWkO6UE97i9PMJ
+Created at: 2026-07-07T17:32:17+00:00
 Requested by agent/subagent: Marcus / wfg_phase2
 Opportunity / project: Phase 4 Approval Fixture
 Opportunity folder: `/Users/nickwright87/WFG/wfg_upgraded/workspace/wfg-gov-contracting-v2/test-artifacts/opportunities/phase4approval001-phase-4-approval-fixture`
@@ -10,7 +10,7 @@ Current status: pending human decision
 Notice ID: PHASE4APPROVAL001
 Solicitation number: P4A
 Artifact/package version: `a12d8a442df8298eab45def4f6063a534f214baac8967afc9755a4ab35a089bf`
-Artifact hash: `7982d253944ac7a5e94cea0d1d1acdfadd9a7c55ece67c2981399a5ac9d26de4`
+Artifact hash: `e543f27045f2105bb7fd3995e6ea67e67bc6ecca868cc741fa6e96e00debe36e`
 
 ## What has already been drafted
 - `/Users/nickwright87/WFG/wfg_upgraded/workspace/wfg-gov-contracting-v2/test-artifacts/opportunities/phase4approval001-phase-4-approval-fixture/drafts/00_INTAKE.md`
@@ -39,7 +39,7 @@ Artifact hash: `7982d253944ac7a5e94cea0d1d1acdfadd9a7c55ece67c2981399a5ac9d26de4
 Authorize WFG to pursue analysis/bid preparation for this opportunity, without external outreach yet.
 
 ## Exact item being approved
-Artifact/package version `a12d8a442df8298eab45def4f6063a534f214baac8967afc9755a4ab35a089bf` with hash `7982d253944ac7a5e94cea0d1d1acdfadd9a7c55ece67c2981399a5ac9d26de4`.
+Artifact/package version `a12d8a442df8298eab45def4f6063a534f214baac8967afc9755a4ab35a089bf` with hash `e543f27045f2105bb7fd3995e6ea67e67bc6ecca868cc741fa6e96e00debe36e`.
 Recipients/message/price/package: see listed files.
 
 ## Expiration or invalidation condition

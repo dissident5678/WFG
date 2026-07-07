@@ -31,6 +31,10 @@ ENV_PATHS = [Path.home() / ".hermes" / ".env", PROJECT / ".env"]
 BOARD = os.environ.get("WFG_KANBAN_BOARD", "gov-contracting")
 DEFAULT_ASSIGNEE = os.environ.get("WFG_APPROVAL_NEXT_ASSIGNEE", "default")
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import wfg_gates  # noqa: E402
+import wfg_tracking_schema  # noqa: E402
+
 
 def now() -> str:
     return dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds")
@@ -66,6 +70,7 @@ def migrate() -> None:
             );
             """
         )
+        wfg_tracking_schema.ensure_phase2_workflow_schema(c)
         c.commit()
 
 
@@ -153,44 +158,39 @@ def folder_for_approval(record_path: str) -> str:
     return ""
 
 
-def downstream_for_approval(approval: dict[str, Any]) -> dict[str, Any] | None:
-    gate = approval.get("gate") or ""
+def downstream_for_approval(approval: dict[str, Any]) -> tuple[dict[str, Any] | None, dict[str, Any] | None]:
+    """Resolve the follow-on internal work for an approved gate.
+
+    Matches on gate_id only (consensus plan Section 5 sequencing constraint).
+    Returns (downstream, refusal): exactly one is non-None for approved
+    decisions; both are None for non-approved decisions.
+    """
     decision = approval.get("decision") or ""
     if decision != "approved":
-        return None
-    if "Pursue" in gate:
-        return {
-            "dispatch_type": "gate1_subcontractor_sourcing",
-            "route": "outreach",
-            "status_after_queue": "pursuing",
-            "title_prefix": "Gate 1 approved — start subcontractor sourcing",
-            "next_gate": "Gate 2 — Authorize External Outreach",
+        return None, None
+    gate_id = wfg_gates.resolve_gate_id(approval)
+    if gate_id is None:
+        return None, {
+            "reason": "unknown_gate_id",
+            "detail": f"approval has no known gate_id and gate text {approval.get('gate')!r} is not in the exact legacy map; refusing to guess",
         }
-    if "Outreach" in gate:
-        return {
-            "dispatch_type": "gate2_outreach_execution",
-            "route": "outreach",
-            "status_after_queue": "outreach_approved",
-            "title_prefix": "Gate 2 approved — execute approved outreach package",
-            "next_gate": "Gate 3 — Approve Basis-of-Bid Subs and Final Price",
+    entry = wfg_gates.GATES[gate_id]
+    dispatch = entry.get("dispatch")
+    if not dispatch:
+        return None, {
+            "reason": "gate_not_dispatchable",
+            "detail": entry.get("no_dispatch_reason") or f"{gate_id} has no automatic downstream work",
+            "gate_id": gate_id,
         }
-    if "Price" in gate:
-        return {
-            "dispatch_type": "gate3_proposal_package",
-            "route": "proposal",
-            "status_after_queue": "proposal_in_progress",
-            "title_prefix": "Gate 3 approved — assemble proposal package",
-            "next_gate": "Gate 4 — Approve Final Submission Package",
-        }
-    if "Submission" in gate:
-        return {
-            "dispatch_type": "gate4_human_submission_prep",
-            "route": "submission",
-            "status_after_queue": "awaiting_submission_approval",
-            "title_prefix": "Gate 4 approved — prepare human submission handoff",
-            "next_gate": "Human submission/proof archive",
-        }
-    return None
+    next_gate_id = dispatch.get("next_gate_id")
+    return {
+        "gate_id": gate_id,
+        "dispatch_type": dispatch["dispatch_type"],
+        "route": dispatch["route"],
+        "status_after_queue": dispatch.get("status_after_queue"),
+        "title_prefix": dispatch["title_prefix"],
+        "next_gate": wfg_gates.gate_display_name(next_gate_id) if next_gate_id else "none — terminal gate",
+    }, None
 
 
 def task_body(approval: dict[str, Any], opp: dict[str, Any], downstream: dict[str, Any]) -> str:
@@ -214,17 +214,41 @@ Start the internal subcontractor-sourcing step for this approved pursue decision
    `python3 scripts/wfg_sub_bid_packet.py "{folder}" --docx --drive`
    If Drive credentials/root folder are not configured, run the same command without `--drive` and flag Drive setup in the internal review summary.
 6. Draft subcontractor-facing quote request text. The outreach draft should link or attach only the approved subcontractor packet, not the internal review files.
-7. Create a Gate 2 approval packet containing the recipient list, draft message, packet version/hash, local file path, Google Drive review links when available, and the internal review summary. Send the approval packet with `scripts/send_wfg_approval_buttons.py`.
+7. Create one GATE_2_PACKAGE approval packet covering all three components — packet (version/hash), exact recipient list, and exact message text — with local file paths, Google Drive review links when available, and the internal review summary. The packet must include a `Gate ID: GATE_2_PACKAGE` line. Send the approval packet with `scripts/send_wfg_approval_buttons.py`.
 8. If there are viable recipients but critical packet facts are missing, create a blocker/reconsideration note instead of contacting anyone.
 9. If the opportunity should not proceed despite Gate 1 approval, create a clear blocker/reconsideration note instead of contacting anyone.
 """.strip()
+    elif dispatch_type == "gate2_send_approval_prep":
+        specific = """
+The outreach package (packet + recipients + message) is approved. Prepare the GATE_2_SEND approval packet:
+1. Verify the approved packet hash, recipient list, and message hash are unchanged; if anything changed, create a new GATE_2_PACKAGE cycle instead.
+2. Run the duplicate check against external_action_ledger and subcontractor_interactions for every recipient; disclose any prior contact with dates in the packet.
+3. Create the GATE_2_SEND approval packet (must include `Gate ID: GATE_2_SEND`) referencing the GATE_2_PACKAGE approval ID and all hashes, and send it with `scripts/send_wfg_approval_buttons.py`.
+Do not send anything to anyone at this step.
+""".strip()
     elif dispatch_type == "gate2_outreach_execution":
         specific = """
-Execute only the exact outreach package that was approved. Verify Gmail sent-message metadata or form-confirmation evidence. Record all interactions in the opportunity folder and workflow database. Do not change recipients/template without requesting a new Gate 2 approval.
+Execute only the exact outreach package that was approved by GATE_2_SEND. Before each send, check external_action_ledger for the opportunity/recipient pair and stop on any prior contact. Verify Gmail sent-message metadata or form-confirmation evidence. Record proof in external_action_ledger, subcontractor_interactions, and the opportunity folder. Do not change recipients/message/packet without a new GATE_2_PACKAGE cycle.
+""".strip()
+    elif dispatch_type == "gate3_followup_execution":
+        specific = """
+Send only the exact approved follow-up text to the exact approved recipients after a ledger duplicate check. Record proof like any other external action. No scope changes, commitments, or price discussion.
 """.strip()
     elif dispatch_type == "gate3_proposal_package":
         specific = """
-Assemble proposal/pricing package from the exact approved price basis. Do not submit. Prepare Gate 4 final submission approval packet with all files Nick must review.
+Assemble proposal/pricing package from the exact approved price basis. Do not submit. Prepare the GATE_4_PACKAGE approval packet (must include `Gate ID: GATE_4_PACKAGE`) with all files Nick must review.
+""".strip()
+    elif dispatch_type == "gate5_submission_proof_tracking":
+        specific = """
+Gate 5 is approved: the authorized human submits. Track that submission proof (portal confirmation, sent-email proof, package hash) is archived under `09 Submission Proof`/the opportunity folder. Only after proof exists may the opportunity state become submitted_by_human. Hermes never submits.
+""".strip()
+    elif dispatch_type == "gate6_closeout":
+        specific = """
+Archive/closeout approved: update the CRM, decision log, and dashboard archive; record win/loss/debrief notes. Never delete audit records.
+""".strip()
+    elif dispatch_type == "amend_resume":
+        specific = """
+Amendment review approved. Resume internal work from the stage named in the approval. Re-issue any approvals voided by the amendment as new versions; never reuse a voided approval.
 """.strip()
     else:
         specific = """
@@ -417,42 +441,121 @@ def post_operational_update(approval: dict[str, Any], downstream: dict[str, Any]
     return result
 
 
+def create_workflow_task(approval: dict[str, Any], downstream: dict[str, Any]) -> int:
+    """DB-first task queue write (consensus plan Section 5: workflow_tasks is
+    the source of truth; Kanban is a tolerant mirror). Idempotent by key;
+    returns the task_id either way."""
+    idem = f"wfg:{approval['approval_id']}:{downstream['dispatch_type']}"
+    opp = opportunity_for_key(approval["dedupe_key"])
+    with con() as c:
+        c.execute(
+            """insert or ignore into workflow_tasks
+               (dedupe_key,opportunity_folder,role_id,task_type,current_state,input_json,idempotency_key,created_at,next_gate,environment)
+               values(?,?,?,?,?,?,?,?,?,?)""",
+            (
+                approval["dedupe_key"],
+                folder_for_approval(approval.get("record_path") or ""),
+                downstream["route"],
+                downstream["dispatch_type"],
+                "queued",
+                json.dumps({"approval_id": approval["approval_id"], "gate_id": downstream.get("gate_id"), "record_path": approval.get("record_path"), "title": opp.get("title")}, sort_keys=True),
+                idem,
+                now(),
+                downstream["next_gate"],
+                approval.get("environment") or "production",
+            ),
+        )
+        row = c.execute("select task_id from workflow_tasks where idempotency_key=?", (idem,)).fetchone()
+        c.commit()
+    return int(row["task_id"])
+
+
+def mirror_to_kanban(approval: dict[str, Any], downstream: dict[str, Any], wf_task_id: int, do_dispatch: bool) -> tuple[dict[str, Any], str, str]:
+    """Attempt the Kanban mirror. Never raises: mirror failure must not lose
+    the workflow_tasks row. Returns (task_info, dispatch_output, error)."""
+    try:
+        task = create_kanban_task(approval, downstream)
+        dispatch_output = dispatch_kanban() if do_dispatch else ""
+        with con() as c:
+            c.execute(
+                "update workflow_tasks set kanban_task_id=?, kanban_mirror_status='mirrored' where task_id=?",
+                (str(task.get("task_id") or ""), wf_task_id),
+            )
+            c.commit()
+        return task, dispatch_output, ""
+    except Exception as exc:
+        with con() as c:
+            c.execute(
+                "update workflow_tasks set kanban_mirror_status='failed', error=? where task_id=?",
+                (str(exc)[:2000], wf_task_id),
+            )
+            c.commit()
+        event(approval["dedupe_key"], "kanban_mirror_failed", {"approval_id": approval["approval_id"], "workflow_task_id": wf_task_id, "error": str(exc)[:500]})
+        return {"task_id": None, "title": f"{downstream['title_prefix']} (kanban mirror pending)"}, "", str(exc)
+
+
+def record_refusal(approval: dict[str, Any], refusal: dict[str, Any]) -> bool:
+    """Record a dispatch refusal exactly once per approval. Returns True the
+    first time (so callers can alert once, not every pump run)."""
+    with con() as c:
+        cur = c.execute(
+            """insert or ignore into approval_dispatches
+               (approval_id,dedupe_key,gate,decision,dispatch_type,status,created_at,error)
+               values(?,?,?,?,?,?,?,?)""",
+            (approval["approval_id"], approval["dedupe_key"], approval.get("gate") or "", approval.get("decision") or "", "refused", "refused", now(), json.dumps(refusal, sort_keys=True)),
+        )
+        c.commit()
+        first = bool(cur.rowcount)
+    if first:
+        event(approval["dedupe_key"], "approval_dispatch_refused", {"approval_id": approval["approval_id"], **refusal})
+    return first
+
+
+def retry_failed_mirror(approval: dict[str, Any], downstream: dict[str, Any], do_dispatch: bool) -> dict[str, Any] | None:
+    idem = f"wfg:{approval['approval_id']}:{downstream['dispatch_type']}"
+    with con() as c:
+        row = c.execute("select task_id, kanban_mirror_status from workflow_tasks where idempotency_key=?", (idem,)).fetchone()
+    if row and row["kanban_mirror_status"] == "failed":
+        task, _, err = mirror_to_kanban(approval, downstream, int(row["task_id"]), do_dispatch)
+        return {"retried_mirror": True, "mirror_ok": not err, "kanban_task_id": task.get("task_id")}
+    return None
+
+
 def run(button_id: str | None = None, approval_id: str | None = None, do_dispatch: bool = True) -> dict[str, Any]:
     migrate()
     approvals = approvals_to_dispatch(button_id=button_id, approval_id=approval_id)
     results = []
-    dispatch_output = ""
     created_any = False
     for approval in approvals:
-        downstream = downstream_for_approval(approval)
-        if not downstream:
+        downstream, refusal = downstream_for_approval(approval)
+        if refusal is not None:
+            first = record_refusal(approval, refusal)
+            results.append({"approval_id": approval["approval_id"], "dedupe_key": approval["dedupe_key"], "status": "refused", "first_refusal": first, **refusal})
+            continue
+        if downstream is None:
             continue
         prior = already_dispatched(approval["approval_id"], downstream["dispatch_type"])
         if prior:
             set_workflow_status_after_queue(approval, downstream)
-            results.append({"approval_id": approval["approval_id"], "dedupe_key": approval["dedupe_key"], "dispatch_type": downstream["dispatch_type"], "status": "already_dispatched", "task_id": prior.get("task_id")})
+            entry = {"approval_id": approval["approval_id"], "dedupe_key": approval["dedupe_key"], "dispatch_type": downstream["dispatch_type"], "status": "already_dispatched", "task_id": prior.get("task_id")}
+            retried = retry_failed_mirror(approval, downstream, do_dispatch)
+            if retried:
+                entry.update(retried)
+            results.append(entry)
             continue
-        try:
-            task = create_kanban_task(approval, downstream)
-            created_any = True
-            if do_dispatch:
-                dispatch_output = dispatch_kanban()
-            insert_dispatch(approval, downstream, task, dispatch_output)
-            set_workflow_status_after_queue(approval, downstream)
-            event(approval["dedupe_key"], "approval_dispatch_queued", {"approval_id": approval["approval_id"], "dispatch_type": downstream["dispatch_type"], "task_id": task.get("task_id"), "kanban_dispatch_output": dispatch_output})
-            followup = post_operational_update(approval, downstream, task)
-            results.append({"approval_id": approval["approval_id"], "dedupe_key": approval["dedupe_key"], "dispatch_type": downstream["dispatch_type"], "status": "queued", "task_id": task.get("task_id"), "dispatch_output": dispatch_output, "followup_ok": None if followup is None else bool(followup.get("ok"))})
-        except Exception as exc:
+        # DB task row first — the source of truth survives any mirror failure.
+        wf_task_id = create_workflow_task(approval, downstream)
+        created_any = True
+        task, dispatch_output, mirror_error = mirror_to_kanban(approval, downstream, wf_task_id, do_dispatch)
+        insert_dispatch(approval, downstream, {**task, "task_id": task.get("task_id") or f"wf:{wf_task_id}"}, dispatch_output)
+        if mirror_error:
             with con() as c:
-                c.execute(
-                    """insert or ignore into approval_dispatches
-                       (approval_id,dedupe_key,gate,decision,dispatch_type,status,created_at,error)
-                       values(?,?,?,?,?,?,?,?)""",
-                    (approval["approval_id"], approval["dedupe_key"], approval.get("gate") or "", approval.get("decision") or "", downstream["dispatch_type"], "error", now(), str(exc)),
-                )
+                c.execute("update approval_dispatches set error=? where approval_id=? and dispatch_type=?", (mirror_error[:2000], approval["approval_id"], downstream["dispatch_type"]))
                 c.commit()
-            event(approval["dedupe_key"], "approval_dispatch_error", {"approval_id": approval["approval_id"], "dispatch_type": downstream["dispatch_type"], "error": str(exc)})
-            results.append({"approval_id": approval["approval_id"], "dedupe_key": approval["dedupe_key"], "dispatch_type": downstream["dispatch_type"], "status": "error", "error": str(exc)})
+        set_workflow_status_after_queue(approval, downstream)
+        event(approval["dedupe_key"], "approval_dispatch_queued", {"approval_id": approval["approval_id"], "dispatch_type": downstream["dispatch_type"], "workflow_task_id": wf_task_id, "kanban_task_id": task.get("task_id"), "kanban_mirror_ok": not mirror_error})
+        followup = post_operational_update(approval, downstream, task)
+        results.append({"approval_id": approval["approval_id"], "dedupe_key": approval["dedupe_key"], "dispatch_type": downstream["dispatch_type"], "status": "queued", "workflow_task_id": wf_task_id, "kanban_task_id": task.get("task_id"), "kanban_mirror_ok": not mirror_error, "followup_ok": None if followup is None else bool(followup.get("ok"))})
     return {"ok": True, "created_any": created_any, "results": results}
 
 

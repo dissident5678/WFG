@@ -37,35 +37,50 @@ DB_PATH = Path(os.environ.get('WFG_DB_PATH', str(PROJECT / 'state' / 'wfg_workfl
 ENV_PATHS = [Path('/home/nick/.hermes/.env'), PROJECT / '.env']
 APPROVAL_TOPIC = 'telegram:-1003889564123:295'
 
+# Consensus plan Section 5 state model. Legacy states remain valid during the
+# transition; scripts/wfg_state_migration.py renames the mid-pipeline legacy
+# states once, in the same change that introduced gate IDs.
 STATUSES = [
     'discovered','analysis_in_progress','awaiting_pursue_decision','passed','watching','pursuing',
     'documents_downloading','documents_complete','analysis_complete','drafting_complete',
     'awaiting_outreach_approval','outreach_approved','outreach_sent','quotes_pending','pricing_in_progress',
     'awaiting_price_approval','proposal_in_progress','awaiting_submission_approval','submitted',
-    'archived','cancelled','amended_reanalysis_required'
+    'archived','cancelled','amended_reanalysis_required',
+    # consensus-plan states
+    'gate1_pending_pursue','gate2_pending_packet_and_recipients','gate2_pending_outreach_send',
+    'gate5_pending_submission','awaiting_human_submission','submitted_by_human',
+    'submission_proof_archived','amendment_review_required','closed_archived',
 ]
 ALLOWED = {
     'discovered': {'analysis_in_progress','watching','passed','cancelled'},
-    'analysis_in_progress': {'documents_downloading','awaiting_pursue_decision','cancelled','amended_reanalysis_required'},
-    'awaiting_pursue_decision': {'analysis_in_progress','pursuing','passed','watching','cancelled','amended_reanalysis_required'},
-    'pursuing': {'documents_downloading','analysis_in_progress','awaiting_outreach_approval','cancelled','amended_reanalysis_required'},
+    'analysis_in_progress': {'documents_downloading','awaiting_pursue_decision','gate1_pending_pursue','cancelled','amended_reanalysis_required','amendment_review_required'},
+    'awaiting_pursue_decision': {'analysis_in_progress','pursuing','passed','watching','cancelled','amended_reanalysis_required','gate1_pending_pursue'},
+    'gate1_pending_pursue': {'analysis_in_progress','pursuing','passed','watching','cancelled','amendment_review_required'},
+    'pursuing': {'documents_downloading','analysis_in_progress','awaiting_outreach_approval','gate2_pending_packet_and_recipients','cancelled','amended_reanalysis_required','amendment_review_required'},
     'documents_downloading': {'documents_complete','amended_reanalysis_required','cancelled'},
-    'documents_complete': {'analysis_complete','drafting_complete','awaiting_outreach_approval','amended_reanalysis_required','cancelled'},
-    'analysis_complete': {'drafting_complete','awaiting_outreach_approval','amended_reanalysis_required','cancelled'},
-    'drafting_complete': {'analysis_in_progress','awaiting_pursue_decision','awaiting_outreach_approval','proposal_in_progress','amended_reanalysis_required','cancelled'},
+    'documents_complete': {'analysis_complete','drafting_complete','awaiting_outreach_approval','gate2_pending_packet_and_recipients','amended_reanalysis_required','cancelled'},
+    'analysis_complete': {'drafting_complete','awaiting_outreach_approval','gate2_pending_packet_and_recipients','amended_reanalysis_required','cancelled'},
+    'drafting_complete': {'analysis_in_progress','awaiting_pursue_decision','awaiting_outreach_approval','gate2_pending_packet_and_recipients','proposal_in_progress','amended_reanalysis_required','cancelled'},
     'awaiting_outreach_approval': {'outreach_approved','passed','watching','amended_reanalysis_required','cancelled'},
-    'outreach_approved': {'outreach_sent','quotes_pending','pricing_in_progress','cancelled','amended_reanalysis_required'},
-    'outreach_sent': {'quotes_pending','pricing_in_progress','cancelled','amended_reanalysis_required'},
-    'quotes_pending': {'pricing_in_progress','cancelled','amended_reanalysis_required'},
-    'pricing_in_progress': {'awaiting_price_approval','proposal_in_progress','cancelled','amended_reanalysis_required'},
+    'gate2_pending_packet_and_recipients': {'gate2_pending_outreach_send','passed','watching','cancelled','amendment_review_required'},
+    'gate2_pending_outreach_send': {'outreach_approved','passed','watching','cancelled','amendment_review_required'},
+    'outreach_approved': {'outreach_sent','quotes_pending','pricing_in_progress','gate2_pending_outreach_send','cancelled','amended_reanalysis_required','amendment_review_required'},
+    'outreach_sent': {'quotes_pending','pricing_in_progress','cancelled','amended_reanalysis_required','amendment_review_required'},
+    'quotes_pending': {'pricing_in_progress','cancelled','amended_reanalysis_required','amendment_review_required'},
+    'pricing_in_progress': {'awaiting_price_approval','proposal_in_progress','cancelled','amended_reanalysis_required','amendment_review_required'},
     'awaiting_price_approval': {'proposal_in_progress','cancelled','amended_reanalysis_required'},
-    'proposal_in_progress': {'awaiting_submission_approval','cancelled','amended_reanalysis_required'},
+    'proposal_in_progress': {'awaiting_submission_approval','gate5_pending_submission','cancelled','amended_reanalysis_required','amendment_review_required'},
     'awaiting_submission_approval': {'submitted','archived','cancelled','amended_reanalysis_required'},
+    'gate5_pending_submission': {'awaiting_human_submission','cancelled','amendment_review_required'},
+    'awaiting_human_submission': {'submitted_by_human','cancelled','amendment_review_required'},
+    'submitted_by_human': {'submission_proof_archived','archived','amendment_review_required'},
+    'submission_proof_archived': {'closed_archived','archived'},
     'watching': {'analysis_in_progress','pursuing','cancelled','amended_reanalysis_required'},
     'passed': {'archived','watching'},
     'amended_reanalysis_required': {'analysis_in_progress','documents_downloading','cancelled'},
+    'amendment_review_required': {'analysis_in_progress','documents_downloading','pursuing','gate2_pending_outreach_send','proposal_in_progress','cancelled'},
     'submitted': {'archived','amended_reanalysis_required'},
-    'archived': set(), 'cancelled': set(),
+    'archived': set(), 'cancelled': set(), 'closed_archived': set(),
 }
 GATES = {'pursue':'GATE 1 — Pursue or Pass','outreach':'GATE 2 — Authorize External Outreach','price':'GATE 3 — Approve Basis-of-Bid Subcontractors and Final Price','submission':'GATE 4 — Approve Final Submission Package'}
 
