@@ -30,7 +30,7 @@ import wfg_phase1  # noqa: E402
 from google.oauth2.credentials import Credentials  # noqa: E402
 from googleapiclient.discovery import build  # noqa: E402
 
-PROJECT = Path(os.environ.get('WFG_PROJECT_DIR', '/home/nick/workspace/gov-contracting'))
+PROJECT = Path(os.environ.get('WFG_PROJECT_DIR', '/home/nick/workspace/wfg-gov-contracting-v2'))
 ARCHIVE = PROJECT / 'opportunity-searches' / 'sam-api'
 CONFIG_PATH = PROJECT / 'opportunity-searches' / 'sam-api-google-sheet.json'
 TOKEN_PATH = Path('/home/nick/.hermes/google_token.json')

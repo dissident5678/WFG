@@ -27,7 +27,7 @@ from google.auth.transport.requests import Request
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaFileUpload
 
-PROJECT = Path('/home/nick/workspace/gov-contracting')
+PROJECT = Path(os.environ.get('WFG_PROJECT_DIR', '/home/nick/workspace/wfg-gov-contracting-v2'))
 ARCHIVE = PROJECT / 'opportunity-searches' / 'sam-api'
 OPP_ROOT = PROJECT / 'opportunities'
 SUMMARY_PATH = PROJECT / 'opportunities' / 'test-run-2026-06-23-summary.md'

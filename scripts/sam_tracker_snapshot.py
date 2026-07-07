@@ -8,11 +8,12 @@ from __future__ import annotations
 import argparse
 import datetime as dt
 import json
+import os
 import subprocess
 import sys
 from pathlib import Path
 
-PROJECT = Path('/home/nick/workspace/gov-contracting')
+PROJECT = Path(os.environ.get('WFG_PROJECT_DIR', '/home/nick/workspace/wfg-gov-contracting-v2'))
 SNAPSHOT_DIR = PROJECT / 'opportunity-searches' / 'sam-api' / 'snapshots'
 SYNC_SCRIPT = PROJECT / 'scripts' / 'sync_sam_opportunity_tracker.py'
 

@@ -1,0 +1,19 @@
+{
+  "api_pages": 0,
+  "batch_id": "sam-20260707-131543-652179",
+  "brief_status": "pending",
+  "code_config_version": "a3a6d289f26bc8b7",
+  "created_at": "2026-07-07T17:15:43+00:00",
+  "enrichment_status": "pending",
+  "errors": [],
+  "fetch_completed_at": null,
+  "fetch_started_at": null,
+  "fetch_status": "pending",
+  "raw_files": [],
+  "records": 0,
+  "snapshot_file": null,
+  "snapshot_status": "pending",
+  "tracker_sync_status": "pending",
+  "updated_at": "2026-07-07T17:15:43+00:00",
+  "warnings": []
+}

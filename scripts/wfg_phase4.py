@@ -8,7 +8,7 @@ import argparse, datetime as dt, hashlib, json, os, re, shutil, sqlite3, subproc
 from pathlib import Path
 from typing import Any
 
-PROJECT=Path(os.environ.get('WFG_PROJECT_DIR','/home/nick/workspace/gov-contracting')).resolve()
+PROJECT=Path(os.environ.get('WFG_PROJECT_DIR','/home/nick/workspace/wfg-gov-contracting-v2')).resolve()
 PROD_DB=PROJECT/'state/wfg_workflow.sqlite3'
 TEST_ROOT=PROJECT/'state/test'
 TEST_DB=TEST_ROOT/'wfg_workflow_test.sqlite3'
@@ -67,7 +67,7 @@ def bootstrap_test_db():
     TEST_ROOT.mkdir(parents=True,exist_ok=True); TEST_ARTIFACTS.mkdir(parents=True,exist_ok=True); TEST_BATCHES.mkdir(parents=True,exist_ok=True); TEST_OPPS.mkdir(parents=True,exist_ok=True)
     if TEST_DB.exists(): TEST_DB.unlink()
     env=os.environ.copy(); env.update({'WFG_ENV':'test','WFG_DB_PATH':str(TEST_DB),'WFG_OPP_ROOT':str(TEST_OPPS),'WFG_BATCHES_DIR':str(TEST_BATCHES),'WFG_ARCHIVE_DIR':str(TEST_ARTIFACTS/'sam-api'),'WFG_STATE_DIR':str(TEST_ROOT)})
-    code="""import sys, os; sys.path.insert(0, os.environ['WFG_PROJECT_DIR']+'/scripts' if 'WFG_PROJECT_DIR' in os.environ else '/home/nick/workspace/gov-contracting/scripts'); import wfg_phase1,wfg_phase2,wfg_phase3; wfg_phase1.init_db(); wfg_phase2.migrate(); wfg_phase3.migrate(); print(wfg_phase1.DB_PATH)"""
+    code="""import sys, os; sys.path.insert(0, os.environ['WFG_PROJECT_DIR']+'/scripts' if 'WFG_PROJECT_DIR' in os.environ else '/home/nick/workspace/wfg-gov-contracting-v2/scripts'); import wfg_phase1,wfg_phase2,wfg_phase3; wfg_phase1.init_db(); wfg_phase2.migrate(); wfg_phase3.migrate(); print(wfg_phase1.DB_PATH)"""
     env['WFG_PROJECT_DIR']=str(PROJECT)
     subprocess.check_call([sys.executable,'-c',code], env=env)
     # Seed test archive with one copied public raw JSON fixture so replay tests never read production paths.

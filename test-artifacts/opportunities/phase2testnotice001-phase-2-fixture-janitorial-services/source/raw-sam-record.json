@@ -1,0 +1,18 @@
+{
+  "classificationCode": "S201",
+  "fullParentPathName": "Test Agency",
+  "naicsCode": "561720",
+  "noticeId": "PHASE2TESTNOTICE001",
+  "postedDate": "2026-06-24",
+  "resourceLinks": [
+    "file:///var/folders/_1/yz72t0vs26xf_gcgpzzhpg380000gn/T/wfg-phase2-fixtures-qg81trcq/scope.txt",
+    "file:///var/folders/_1/yz72t0vs26xf_gcgpzzhpg380000gn/T/wfg-phase2-fixtures-qg81trcq/spec.docx"
+  ],
+  "responseDeadLine": "2026-07-30T12:00:00-04:00",
+  "solicitationNumber": "PHASE2-SOL-001",
+  "title": "Phase 2 Fixture Janitorial Services",
+  "type": "Combined Synopsis/Solicitation",
+  "typeOfSetAside": "SBA",
+  "typeOfSetAsideDescription": "Total Small Business Set-Aside",
+  "uiLink": "https://sam.gov/opp/phase2test"
+}

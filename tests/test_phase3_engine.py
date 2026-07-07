@@ -2,7 +2,8 @@
 from __future__ import annotations
 import os
 from pathlib import Path as _P
-_BASE=_P('/home/nick/workspace/gov-contracting')
+_BASE=_P(os.environ.get('WFG_PROJECT_DIR', str(_P(__file__).resolve().parents[1])))
+os.environ.setdefault('WFG_PROJECT_DIR',str(_BASE))
 os.environ.setdefault('WFG_ENV','test')
 os.environ.setdefault('WFG_DB_PATH',str(_BASE/'state/test/wfg_workflow_test.sqlite3'))
 os.environ.setdefault('WFG_STATE_DIR',str(_BASE/'state/test'))
@@ -11,7 +12,7 @@ os.environ.setdefault('WFG_ARCHIVE_DIR',str(_BASE/'test-artifacts/sam-api'))
 os.environ.setdefault('WFG_OPP_ROOT',str(_BASE/'test-artifacts/opportunities'))
 import csv, json, sqlite3, sys, tempfile, unittest
 from pathlib import Path
-PROJECT=Path('/home/nick/workspace/gov-contracting'); sys.path.insert(0,str(PROJECT/'scripts'))
+PROJECT=Path(str(_BASE)); sys.path.insert(0,str(PROJECT/'scripts'))
 import wfg_phase1, wfg_phase2, wfg_phase3
 
 class Phase3Tests(unittest.TestCase):

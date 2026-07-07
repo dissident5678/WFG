@@ -1,8 +1,12 @@
 {
+  "plan": "docs/strategy/WFG_HERMES_DIGITAL_EMPLOYEE_CONSENSUS_PLAN.md",
+  "skill_name_policy": "Every primary_skills entry must resolve to an installed skill directory under ~/.hermes/skills/business-ops/. Renamed per consensus plan Section 2 (Phase 1); do not create alias skill folders.",
+  "mvde_policy": "Consensus plan Section 11: six roles are active for the MVDE. Roles with mvde_active=false are target-state; their duties run as skills/checklists invoked by the active six until volume justifies promotion.",
   "subagents": [
     {
       "id": "marcus-orchestrator",
       "role": "Executive orchestrator",
+      "mvde_active": true,
       "primary_skills": [
         "wfg-approval-coordinator"
       ],
@@ -11,8 +15,10 @@
     {
       "id": "capture-manager",
       "role": "Opportunity fit, schedule, and bid/no-bid analysis",
+      "mvde_active": false,
       "primary_skills": [
-        "wfg-sam-brief",
+        "wfg-sam-api-watcher",
+        "wfg-bid-no-bid",
         "wfg-approval-coordinator"
       ],
       "external_actions": "none"
@@ -20,14 +26,16 @@
     {
       "id": "solicitation-reader",
       "role": "Extract scope, clauses, dates, attachments, amendments, and source map",
+      "mvde_active": true,
       "primary_skills": [
-        "wfg-solicitation-analyst"
+        "wfg-solicitation-reader"
       ],
       "external_actions": "none"
     },
     {
       "id": "bid-packet-builder",
       "role": "Create subcontractor-facing bid packet and internal review bundle",
+      "mvde_active": true,
       "primary_skills": [
         "wfg-subcontractor-bid-packet"
       ],
@@ -36,6 +44,7 @@
     {
       "id": "subcontractor-scout",
       "role": "Find and score subcontractor candidates",
+      "mvde_active": false,
       "primary_skills": [
         "wfg-subcontractor-scout"
       ],
@@ -44,14 +53,17 @@
     {
       "id": "subcontractor-validator",
       "role": "Verify fit, credentials, service area, and contact quality",
+      "mvde_active": false,
       "primary_skills": [
-        "wfg-subcontractor-crm"
+        "wfg-sub-crm-manager",
+        "wfg-subcontractor-validator"
       ],
       "external_actions": "none"
     },
     {
       "id": "outreach-coordinator",
       "role": "Draft quote request emails and Gate 2 outreach approval packets",
+      "mvde_active": true,
       "primary_skills": [
         "wfg-outreach-drafter",
         "wfg-approval-coordinator"
@@ -61,46 +73,56 @@
     {
       "id": "estimator",
       "role": "Normalize quotes, scope gaps, exclusions, bid tabs, and basis-of-bid",
+      "mvde_active": false,
       "primary_skills": [
-        "wfg-estimating"
+        "wfg-estimator-los"
       ],
       "external_actions": "none"
     },
     {
       "id": "compliance-librarian",
       "role": "Labor, insurance, bonds, representations, SAM/FAR compliance extraction",
+      "mvde_active": false,
       "primary_skills": [
-        "wfg-compliance-review"
+        "wfg-compliance-auditor"
       ],
       "external_actions": "none"
     },
     {
       "id": "proposal-compiler",
       "role": "Assemble proposal package and Gate 4 final submission approval packet",
+      "mvde_active": false,
       "primary_skills": [
-        "wfg-proposal-assembler"
+        "wfg-proposal-compiler"
       ],
       "external_actions": "none"
     },
     {
       "id": "red-team-reviewer",
       "role": "Find contradictions, missing attachments, weak assumptions, and polish issues",
+      "mvde_active": false,
       "primary_skills": [
-        "wfg-red-team-review"
+        "wfg-validator-pro"
       ],
       "external_actions": "none"
     },
     {
       "id": "drive-librarian",
       "role": "Keep local files and Google Drive review folders clean, indexed, and reviewable",
-      "primary_skills": [
-        "wfg-drive-review-hub"
+      "mvde_active": true,
+      "primary_skills": [],
+      "sop_refs": [
+        "config/drive-review-hub.json",
+        "scripts/wfg_sub_bid_packet.py (--drive)",
+        "docs/upgrade/GOOGLE_DRIVE_REVIEW_HUB.md"
       ],
+      "note": "No installed Drive skill exists yet; Drive logic lives in scripts. Phase 3 adds scripts/wfg_drive_review_hub.py as the owning SOP.",
       "external_actions": "drive_private_only"
     },
     {
       "id": "approval-coordinator",
       "role": "Create approval packets, send Telegram buttons, reconcile decisions, and trigger workflow pump",
+      "mvde_active": true,
       "primary_skills": [
         "wfg-approval-coordinator"
       ],

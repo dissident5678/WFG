@@ -31,7 +31,7 @@ from typing import Any
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import wfg_phase1
 
-PROJECT = Path(os.environ.get('WFG_PROJECT_DIR', '/home/nick/workspace/gov-contracting')).resolve()
+PROJECT = Path(os.environ.get('WFG_PROJECT_DIR', '/home/nick/workspace/wfg-gov-contracting-v2')).resolve()
 OPP_ROOT = Path(os.environ.get('WFG_OPP_ROOT', str(PROJECT / 'opportunities'))).resolve()
 DB_PATH = Path(os.environ.get('WFG_DB_PATH', str(PROJECT / 'state' / 'wfg_workflow.sqlite3'))).resolve()
 ENV_PATHS = [Path('/home/nick/.hermes/.env'), PROJECT / '.env']

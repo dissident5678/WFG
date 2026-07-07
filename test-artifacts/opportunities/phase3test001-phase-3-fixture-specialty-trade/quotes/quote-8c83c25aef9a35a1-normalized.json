@@ -1,0 +1,33 @@
+{
+  "quote_version": "quote-8c83c25aef9a35a1",
+  "subcontractor_id": 7,
+  "total": "1100.00",
+  "line_items": [
+    {
+      "description": "labor",
+      "qty": "10.00",
+      "unit_price": "100.00",
+      "line_total": "1000.00"
+    },
+    {
+      "description": "materials",
+      "qty": "5.00",
+      "unit_price": "20.00",
+      "line_total": "100.00"
+    }
+  ],
+  "exclusions": [
+    "permits by others"
+  ],
+  "alternates": [],
+  "taxes": "0",
+  "bonding": "50",
+  "lead_time": "7 days",
+  "schedule": "2 weeks",
+  "validity_period": "30 days",
+  "wage_assumptions": "SCLS/DBA TBD",
+  "missing_scope": [],
+  "qualifications": [],
+  "math_inconsistencies": [],
+  "extraction_confidence": "high"
+}

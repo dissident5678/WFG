@@ -38,7 +38,7 @@ from pathlib import Path
 
 import wfg_phase1
 
-PROJECT = Path(os.environ.get('WFG_PROJECT_DIR', '/home/nick/workspace/gov-contracting'))
+PROJECT = Path(os.environ.get('WFG_PROJECT_DIR', '/home/nick/workspace/wfg-gov-contracting-v2'))
 ARCHIVE = PROJECT / 'opportunity-searches' / 'sam-api'
 PROFILE_PATH = PROJECT / 'opportunity-searches' / 'sam_search_profile.json'
 DESC_CACHE_PATH = ARCHIVE / 'desc-cache.json'

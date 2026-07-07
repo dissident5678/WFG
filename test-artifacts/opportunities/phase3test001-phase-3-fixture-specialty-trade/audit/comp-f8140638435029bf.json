@@ -1,0 +1,140 @@
+{
+  "run_version": "comp-f8140638435029bf",
+  "rule_version": "WFG-PHASE3-RULES-2026-06-24",
+  "contract_classification": "special_trade",
+  "checks": [
+    {
+      "rule_id": "NAICS-ASSIGNED",
+      "rule_version": "WFG-PHASE3-RULES-2026-06-24",
+      "official_source": "FAR/SBA/DOL solicitation-derived check - local deterministic checklist",
+      "checked_at": "2026-07-07T17:14:49+00:00",
+      "ok": true,
+      "finding": "Assigned NAICS: 238210"
+    },
+    {
+      "rule_id": "SET-ASIDE-STATUS",
+      "rule_version": "WFG-PHASE3-RULES-2026-06-24",
+      "official_source": "FAR/SBA/DOL solicitation-derived check - local deterministic checklist",
+      "checked_at": "2026-07-07T17:14:49+00:00",
+      "ok": true,
+      "finding": "Set-aside: Total Small Business Set-Aside"
+    },
+    {
+      "rule_id": "LOS-APPLICABILITY",
+      "rule_version": "WFG-PHASE3-RULES-2026-06-24",
+      "official_source": "FAR/SBA/DOL solicitation-derived check - local deterministic checklist",
+      "checked_at": "2026-07-07T17:14:49+00:00",
+      "ok": true,
+      "finding": "LOS applies: True"
+    },
+    {
+      "rule_id": "LOS-SPECIAL-TRADE",
+      "rule_version": "WFG-PHASE3-RULES-2026-06-24",
+      "official_source": "FAR/SBA/DOL solicitation-derived check - local deterministic checklist",
+      "checked_at": "2026-07-07T17:14:49+00:00",
+      "ok": true,
+      "finding": "Special trade construction formula; materials may be excluded where rule permits."
+    },
+    {
+      "rule_id": "SSE-VERIFICATION",
+      "rule_version": "WFG-PHASE3-RULES-2026-06-24",
+      "official_source": "FAR/SBA/DOL solicitation-derived check - local deterministic checklist",
+      "checked_at": "2026-07-07T17:14:49+00:00",
+      "ok": true,
+      "finding": "Verified SSE: [3]; unverified/not counted: []"
+    },
+    {
+      "rule_id": "WAGE-DETERMINATION",
+      "rule_version": "WFG-PHASE3-RULES-2026-06-24",
+      "official_source": "FAR/SBA/DOL solicitation-derived check - local deterministic checklist",
+      "checked_at": "2026-07-07T17:14:49+00:00",
+      "ok": true,
+      "finding": "DBA/SCLS/CBA wage determination present"
+    },
+    {
+      "rule_id": "BONDING",
+      "rule_version": "WFG-PHASE3-RULES-2026-06-24",
+      "official_source": "FAR/SBA/DOL solicitation-derived check - local deterministic checklist",
+      "checked_at": "2026-07-07T17:14:49+00:00",
+      "ok": true,
+      "finding": "BONDING"
+    },
+    {
+      "rule_id": "INSURANCE",
+      "rule_version": "WFG-PHASE3-RULES-2026-06-24",
+      "official_source": "FAR/SBA/DOL solicitation-derived check - local deterministic checklist",
+      "checked_at": "2026-07-07T17:14:49+00:00",
+      "ok": true,
+      "finding": "INSURANCE"
+    },
+    {
+      "rule_id": "SECURITY-BADGING",
+      "rule_version": "WFG-PHASE3-RULES-2026-06-24",
+      "official_source": "FAR/SBA/DOL solicitation-derived check - local deterministic checklist",
+      "checked_at": "2026-07-07T17:14:49+00:00",
+      "ok": true,
+      "finding": "SECURITY-BADGING"
+    },
+    {
+      "rule_id": "SITE-VISIT",
+      "rule_version": "WFG-PHASE3-RULES-2026-06-24",
+      "official_source": "FAR/SBA/DOL solicitation-derived check - local deterministic checklist",
+      "checked_at": "2026-07-07T17:14:49+00:00",
+      "ok": true,
+      "finding": "SITE-VISIT"
+    },
+    {
+      "rule_id": "REPS-CERTS",
+      "rule_version": "WFG-PHASE3-RULES-2026-06-24",
+      "official_source": "FAR/SBA/DOL solicitation-derived check - local deterministic checklist",
+      "checked_at": "2026-07-07T17:14:49+00:00",
+      "ok": false,
+      "finding": "[LEGAL OR COMPLIANCE REVIEW REQUIRED] REPS-CERTS"
+    },
+    {
+      "rule_id": "AMENDMENTS",
+      "rule_version": "WFG-PHASE3-RULES-2026-06-24",
+      "official_source": "FAR/SBA/DOL solicitation-derived check - local deterministic checklist",
+      "checked_at": "2026-07-07T17:14:49+00:00",
+      "ok": true,
+      "finding": "AMENDMENTS"
+    },
+    {
+      "rule_id": "SUBMISSION-INSTRUCTIONS",
+      "rule_version": "WFG-PHASE3-RULES-2026-06-24",
+      "official_source": "FAR/SBA/DOL solicitation-derived check - local deterministic checklist",
+      "checked_at": "2026-07-07T17:14:49+00:00",
+      "ok": false,
+      "finding": "[LEGAL OR COMPLIANCE REVIEW REQUIRED] SUBMISSION-INSTRUCTIONS"
+    },
+    {
+      "rule_id": "PRIMARY-VITAL",
+      "rule_version": "WFG-PHASE3-RULES-2026-06-24",
+      "official_source": "FAR/SBA/DOL solicitation-derived check - local deterministic checklist",
+      "checked_at": "2026-07-07T17:14:49+00:00",
+      "ok": true,
+      "finding": "PRIMARY-VITAL"
+    },
+    {
+      "rule_id": "UNUSUAL-RELIANCE",
+      "rule_version": "WFG-PHASE3-RULES-2026-06-24",
+      "official_source": "FAR/SBA/DOL solicitation-derived check - local deterministic checklist",
+      "checked_at": "2026-07-07T17:14:49+00:00",
+      "ok": true,
+      "finding": "UNUSUAL-RELIANCE"
+    },
+    {
+      "rule_id": "NMR-RISK",
+      "rule_version": "WFG-PHASE3-RULES-2026-06-24",
+      "official_source": "FAR/SBA/DOL solicitation-derived check - local deterministic checklist",
+      "checked_at": "2026-07-07T17:14:49+00:00",
+      "ok": true,
+      "finding": "NMR-RISK"
+    }
+  ],
+  "blocking_flags": [
+    "[LEGAL OR COMPLIANCE REVIEW REQUIRED] REPS-CERTS",
+    "[LEGAL OR COMPLIANCE REVIEW REQUIRED] SUBMISSION-INSTRUCTIONS"
+  ],
+  "compliant": false
+}

@@ -2,7 +2,8 @@
 from __future__ import annotations
 import os, sqlite3, unittest
 from pathlib import Path
-BASE=Path('/home/nick/workspace/gov-contracting')
+BASE=Path(os.environ.get('WFG_PROJECT_DIR', str(Path(__file__).resolve().parents[1])))
+os.environ.setdefault('WFG_PROJECT_DIR',str(BASE))
 os.environ.setdefault('WFG_ENV','test')
 os.environ.setdefault('WFG_DB_PATH',str(BASE/'state/test/wfg_workflow_test.sqlite3'))
 os.environ.setdefault('WFG_STATE_DIR',str(BASE/'state/test'))
@@ -40,6 +41,7 @@ class Phase4HardeningTests(unittest.TestCase):
     def test_04_attachment_reference_not_downloaded(self):
         with sqlite3.connect(wfg_phase1.DB_PATH) as c:
             c.row_factory=sqlite3.Row
+            c.execute('delete from attachments where dedupe_key="notice:refonly"')
             c.execute("insert into attachments(dedupe_key,resource_url,resource_name,reference_status,download_status,parse_status,environment) values(?,?,?,?,?,?,?)",('notice:refonly','https://example.invalid/a.pdf','a.pdf','discovered_reference','not_attempted','not_parsed','test'))
             c.commit()
             r=c.execute('select download_status,parse_status,local_path from attachments where dedupe_key="notice:refonly"').fetchone()

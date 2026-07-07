@@ -4,7 +4,7 @@ version: 2
 updated_at: "2026-06-24"
 phase4_verification:
   verification_date: "2026-06-24"
-  verification_report: "/home/nick/workspace/gov-contracting/docs/phase4-company-directive-verification.md"
+  verification_report: "/home/nick/workspace/wfg-gov-contracting-v2/docs/phase4-company-directive-verification.md"
   authoritative_local_sources_reviewed:
     - "README.md"
     - "company-setup.md"

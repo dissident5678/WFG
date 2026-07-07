@@ -1,4 +1,9 @@
-# Agent Debate Brief — WFG Digital Employee System
+# Agent Debate Brief — WFG Digital Employee System (HISTORICAL)
+
+> **HISTORICAL DOCUMENT.** The debate this brief describes concluded on 2026-07-07
+> with consensus. The outcome and current authority is
+> `docs/strategy/WFG_HERMES_DIGITAL_EMPLOYEE_CONSENSUS_PLAN.md`. Do not act on this
+> brief; it is kept for the record only.
 
 Use this brief for the planned agent debate.
 

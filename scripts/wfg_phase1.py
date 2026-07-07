@@ -15,7 +15,7 @@ import tempfile
 from pathlib import Path
 from typing import Any, Iterable
 
-PROJECT = Path(os.environ.get('WFG_PROJECT_DIR', '/home/nick/workspace/gov-contracting')).resolve()
+PROJECT = Path(os.environ.get('WFG_PROJECT_DIR', '/home/nick/workspace/wfg-gov-contracting-v2')).resolve()
 ARCHIVE = Path(os.environ.get('WFG_ARCHIVE_DIR', str(PROJECT / 'opportunity-searches' / 'sam-api'))).resolve()
 BATCHES = Path(os.environ.get('WFG_BATCHES_DIR', str(ARCHIVE / 'batches'))).resolve()
 STATE_DIR = Path(os.environ.get('WFG_STATE_DIR', str(PROJECT / 'state'))).resolve()

@@ -1,0 +1,23 @@
+{
+  "description": "Authorized approvers for WFG approval gates. Only Telegram user IDs listed here count as decisions; a button press or decision reply from any other ID must be logged and ignored with an alert to the system_ops topic. See consensus plan Section 7 (Approver identity and Managing Member evidence).",
+  "plan_ref": "docs/strategy/WFG_HERMES_DIGITAL_EMPLOYEE_CONSENSUS_PLAN.md#7-approval-system",
+  "approvers": [
+    {
+      "name": "Nick Wright",
+      "role": "Managing Member",
+      "telegram_user_id": "6020401473",
+      "telegram_display_name": "Dissident",
+      "authority": "all_gates",
+      "gates": ["GATE_1_PURSUE", "GATE_2_PACKAGE", "GATE_2_SEND", "GATE_3_FOLLOWUP", "GATE_3_STRATEGY", "GATE_4_PACKAGE", "GATE_5_SUBMIT", "GATE_6_CLOSE", "GATE_AMEND_CONTINUE"]
+    }
+  ],
+  "test_approvers": [
+    {
+      "name": "Test",
+      "telegram_user_id": "123",
+      "note": "Test fixture ID used by automated tests only. Never valid for production gates; reconciler must reject it when the approval is not a test fixture."
+    }
+  ],
+  "binding_decision_evidence": "For GATE_3_STRATEGY, GATE_4_PACKAGE, GATE_5_SUBMIT: the decision row (with telegram_user_id), the approvals/decision-log.md entry, and the decided packet copy in Drive '04 Approvals/' together constitute Managing Member approval evidence.",
+  "updated_at": "2026-07-07"
+}

@@ -12,7 +12,7 @@ from pathlib import Path
 from typing import Any
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import wfg_phase1, wfg_phase2
-PROJECT=Path(os.environ.get('WFG_PROJECT_DIR','/home/nick/workspace/gov-contracting')).resolve(); DB=Path(os.environ.get('WFG_DB_PATH', str(PROJECT/'state/wfg_workflow.sqlite3'))).resolve()
+PROJECT=Path(os.environ.get('WFG_PROJECT_DIR','/home/nick/workspace/wfg-gov-contracting-v2')).resolve(); DB=Path(os.environ.get('WFG_DB_PATH', str(PROJECT/'state/wfg_workflow.sqlite3'))).resolve()
 RULE_VERSION='WFG-PHASE3-RULES-2026-06-24'
 STATUS={'verified','unverified','expired','not_applicable'}
 
