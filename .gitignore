@@ -1,6 +1,7 @@
 # Secrets and credentials — never commit (plan Section 13, risk 12)
 .env
 .env.*
+!.env.example
 *.pem
 *.key
 credentials*.json

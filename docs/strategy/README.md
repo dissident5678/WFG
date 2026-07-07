@@ -38,7 +38,34 @@ Key sections for operators:
   subcontractor-facing folder, records Drive links in `artifact_index`, and has
   fake-Drive tests for idempotent folder/file behavior. Test suite: 44 passed,
   6 environment-skipped.
-- Next: MVDE subset of Phase 5 (GATE_2_PACKAGE/GATE_2_SEND cycle; send worker
-  last, ledger-checked). Deployment to the live box must re-run the migration
-  there (idempotent) and update the Telegram callback handler to record
-  revise/hold button presses.
+- Phase 4 (subagent role system): executed 2026-07-07 —
+  `scripts/wfg_delegate_task.py` queues role-bound workflow tasks with mission,
+  skills/SOP refs, external-action boundaries, output contract, and next gate.
+  It refuses to treat a skill name as a worker.
+- Phase 5 (outreach and quote collection): executed 2026-07-07 —
+  `scripts/wfg_outreach_cycle.py` implements the consensus
+  GATE_2_PACKAGE/GATE_2_SEND split, blocks placeholder recipients, creates
+  approval packets, requires exact approved hashes before execution, records
+  proof in `external_action_ledger`/`subcontractor_interactions`, and blocks
+  duplicate sends. Real Gmail send requires explicit `--execute --transport
+  gmail` plus `WFG_ALLOW_REAL_SEND=1`; tests use mock transport only.
+- Phase 6 (proposal assembly): executed 2026-07-07 —
+  `scripts/wfg_proposal_assembler.py` creates version-bound proposal packages,
+  manifests, ZIP review bundles, and separate GATE_3_STRATEGY, GATE_4_PACKAGE,
+  and hash-confirmed GATE_5_SUBMIT packets. Gate 4 does not imply submission.
+- Phase 7 (command center): executed 2026-07-07 —
+  `scripts/wfg_command_center.py` generates `latest.json`, `WFG Command
+  Center.md`, and a Telegram-ready brief answering the six operator questions
+  from Section 10.
+- Phase 8 (hardening and GitHub review): executed 2026-07-07 —
+  `.github/workflows/ci.yml`, PR checklist, `.env.example`,
+  `DATA_CLASSIFICATION.md`, `docs/deployment/HERMES_LAPTOP_REBUILD.md`,
+  `requirements-dev.txt`, and `scripts/wfg_repo_hardening.py` are in place.
+  Verification after implementation: focused Phase 4-8 tests pass, repo
+  hardening check is clean.
+
+Next live/laptop actions: clone/pull this repo on the Hermes laptop, configure
+`.env`, install `requirements-dev.txt`, run CI-equivalent checks locally, re-run
+the DB migration there (idempotent), update the Telegram callback handler for
+revise/hold buttons, then test a real opportunity intake. Do not perform real
+outreach until exact GATE_2_PACKAGE and GATE_2_SEND approvals exist.

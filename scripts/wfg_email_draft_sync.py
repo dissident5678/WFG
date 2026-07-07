@@ -26,6 +26,7 @@ ROOT = Path(os.environ.get("WFG_PROJECT_DIR", "/home/nick/workspace/wfg-gov-cont
 DB = Path(os.environ.get("WFG_DB_PATH", str(ROOT / "state/wfg_workflow.sqlite3"))).resolve()
 VALID_EMAIL_RE = re.compile(r"^[A-Z0-9._%+\-]+@[A-Z0-9.\-]+\.[A-Z]{2,}$", re.I)
 INVALID_MARKERS = ("to verify", "do not send", "contact form", "placeholder", "unknown", "n/a", "none", "[", "]")
+PENDING_GATE2_PREFIX = "[PENDING WFG GATE 2] "
 
 
 def con() -> sqlite3.Connection:
@@ -80,6 +81,8 @@ def extract_body_and_subject(src: Path, folder: Path) -> tuple[str, str]:
     if not subject:
         title = folder.name.replace("-", " ").strip().title()
         subject = f"Quote Request - {title}"
+    if not subject.startswith(PENDING_GATE2_PREFIX):
+        subject = PENDING_GATE2_PREFIX + subject
     m = re.search(r"##\s+Draft email\s*\n([\s\S]*)", body_md, flags=re.I)
     body = (m.group(1).strip() if m else body_md.strip())
     body = re.sub(r"^Subject:\s*.+$\n?", "", body, flags=re.I | re.M).strip()
