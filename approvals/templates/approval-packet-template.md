@@ -1,11 +1,12 @@
 # APPROVAL NEEDED — [Opportunity / Project]
 
 Approval ID: [YYYYMMDD-short-name-approval-type]
+Gate ID: [GATE_1_PURSUE / GATE_2_PACKAGE / GATE_2_SEND / GATE_3_FOLLOWUP / GATE_3_STRATEGY / GATE_4_PACKAGE / GATE_5_SUBMIT / GATE_6_CLOSE / GATE_AMEND_CONTINUE]
 Created at: [timestamp]
 Requested by agent/subagent: [name / role]
 Opportunity / project: [name]
 Opportunity folder: `[path]`
-Approval type: [Gate 1 pursue/pass / Gate 2 external outreach / Gate 3 final price and basis-of-bid subcontractors / Gate 4 final submission package / award acceptance / sensitive upload / other]
+Approval type: [human-readable gate name matching the Gate ID above — the dispatcher matches on Gate ID only]
 Current status: [drafted / waiting for documents / ready for review / blocked]
 Notice ID: [notice_id]
 Solicitation number: [solicitation_number]
