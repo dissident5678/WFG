@@ -113,10 +113,11 @@
       "primary_skills": [],
       "sop_refs": [
         "config/drive-review-hub.json",
+        "scripts/wfg_drive_review_hub.py",
         "scripts/wfg_sub_bid_packet.py (--drive)",
         "docs/upgrade/GOOGLE_DRIVE_REVIEW_HUB.md"
       ],
-      "note": "No installed Drive skill exists yet; Drive logic lives in scripts. Phase 3 adds scripts/wfg_drive_review_hub.py as the owning SOP.",
+      "note": "No installed Drive skill exists yet; Drive logic lives in scripts. scripts/wfg_drive_review_hub.py owns the Phase 3 MVDE review hub workflow.",
       "external_actions": "drive_private_only"
     },
     {

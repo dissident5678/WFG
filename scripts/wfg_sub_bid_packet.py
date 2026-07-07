@@ -796,26 +796,13 @@ def drive_upload_file(drive: Any, media_cls: Any, path: Path, folder_id: str) ->
 
 
 def create_drive_review_bundle(opp: Path, out_dir: Path, files: list[Path]) -> dict[str, Any]:
-    drive, media_cls = google_drive_service()
-    root_id = DRIVE_ROOT_FOLDER_ID or drive_find_or_create_folder(drive, "WFG Review Hub")
-    sam_id = drive_find_or_create_folder(drive, "SAM Opportunities", root_id)
-    year_id = drive_find_or_create_folder(drive, str(dt.date.today().year), sam_id)
-    opp_id = drive_find_or_create_folder(drive, opp.name[:120], year_id)
-    packet_id = drive_find_or_create_folder(drive, "03 Subcontractor Packet", opp_id)
-    internal_id = drive_find_or_create_folder(drive, "02 Internal Review", opp_id)
-    uploaded: list[dict[str, Any]] = []
-    for f in files:
-        folder_id = internal_id if "internal" in f.name.lower() or f.suffix.lower() == ".json" else packet_id
-        uploaded.append(drive_upload_file(drive, media_cls, f, folder_id))
-    return {
-        "drive_root_folder_id": root_id,
-        "opportunity_folder_id": opp_id,
-        "packet_folder_id": packet_id,
-        "internal_review_folder_id": internal_id,
-        "uploaded_files": uploaded,
-        "public_sharing": False,
-        "created_at": utc_now(),
-    }
+    try:
+        import wfg_drive_review_hub
+    except ModuleNotFoundError:
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
+        import wfg_drive_review_hub
+
+    return wfg_drive_review_hub.safe_upload_review_bundle(opp, extra_files=files)
 
 
 def write_outputs(opp: Path, out_dir: Path, data: dict[str, Any], review: dict[str, Any], *, docx: bool, drive: bool, template: Path) -> dict[str, Any]:

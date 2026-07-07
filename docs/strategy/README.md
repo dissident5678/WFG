@@ -31,7 +31,14 @@ Key sections for operators:
   `scripts/wfg_state_migration.py` applied to the extracted DB (backup in
   `state/backups/`; 8 states migrated, 24 historical contacts backfilled, 23
   gate IDs assigned). Test suite: 41 passed, 6 environment-skipped.
-- Next: MVDE subsets of Phase 3 (Drive review bundle upload) and Phase 5
-  (GATE_2_PACKAGE/GATE_2_SEND cycle; send worker last, ledger-checked).
-  Deployment to the live box must re-run the migration there (idempotent) and
-  update the Telegram callback handler to record revise/hold button presses.
+- Phase 3 MVDE subset (Drive review bundle upload): executed 2026-07-07 —
+  `scripts/wfg_drive_review_hub.py` creates/finds the private Drive review
+  folders, writes the single-file command snapshot, uploads review-ready packet,
+  approval, and draft-email artifacts, keeps internal review files out of the
+  subcontractor-facing folder, records Drive links in `artifact_index`, and has
+  fake-Drive tests for idempotent folder/file behavior. Test suite: 44 passed,
+  6 environment-skipped.
+- Next: MVDE subset of Phase 5 (GATE_2_PACKAGE/GATE_2_SEND cycle; send worker
+  last, ledger-checked). Deployment to the live box must re-run the migration
+  there (idempotent) and update the Telegram callback handler to record
+  revise/hold button presses.

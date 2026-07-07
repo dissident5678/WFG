@@ -11,6 +11,7 @@ WFG Review Hub/
   SAM Opportunities/
     2026/
       <notice-id-or-opportunity-slug>/
+        00 Command Snapshot/
         01 Source Docs/
         02 Internal Review/
         03 Subcontractor Packet/
@@ -19,9 +20,22 @@ WFG Review Hub/
         06 Quotes Received/
         07 Proposal Package/
         08 Submission Proof/
+        09 Pricing and Bid Strategy/
+        10 Decision Logs/
 ```
 
+The Phase 3 MVDE script creates `00 Command Snapshot`, `02 Internal Review`,
+`03 Subcontractor Packet`, `04 Approvals`, and `05 Draft Emails` first. The full
+append-only tree is created later when the workflow needs the later-stage
+proposal, pricing, quote, source, and closeout folders.
+
 ## What belongs where
+
+### 00 Command Snapshot
+
+One mobile-readable `command_snapshot.md`, overwritten in place after major
+state changes. History belongs in `workflow_events` and `artifact_index`, not in
+dated Drive copies.
 
 ### 01 Source Docs
 
@@ -59,6 +73,23 @@ Final bid forms, pricing sheets, technical package, certifications, and submissi
 ### 08 Submission Proof
 
 Screenshots, sent email proof, portal confirmation, timestamp, and final archive.
+
+### 09 Pricing and Bid Strategy
+
+Quote comparison, pricing scenarios, basis-of-bid recommendation, and Gate 3 strategy approval packet.
+
+### 10 Decision Logs
+
+Bid/no-bid decision, approval history, archive/closeout decision, win/loss notes, and debrief notes.
+
+## MVDE command
+
+```bash
+python3 scripts/wfg_drive_review_hub.py /path/to/opportunity-folder
+```
+
+Use `--dry-run` to write the local command snapshot and manifest without calling
+Google Drive. The script never creates public links.
 
 ## Required environment
 
