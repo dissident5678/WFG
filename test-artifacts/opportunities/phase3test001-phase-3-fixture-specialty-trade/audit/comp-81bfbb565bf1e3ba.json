@@ -1,0 +1,151 @@
+{
+  "run_version": "comp-81bfbb565bf1e3ba",
+  "rule_version": "WFG-PHASE3-RULES-2026-06-24",
+  "contract_classification": "service",
+  "checks": [
+    {
+      "rule_id": "NAICS-ASSIGNED",
+      "rule_version": "WFG-PHASE3-RULES-2026-06-24",
+      "official_source": "FAR/SBA/DOL solicitation-derived check - local deterministic checklist",
+      "checked_at": "2026-07-08T02:04:47+00:00",
+      "ok": true,
+      "finding": "Assigned NAICS: 238210"
+    },
+    {
+      "rule_id": "SET-ASIDE-STATUS",
+      "rule_version": "WFG-PHASE3-RULES-2026-06-24",
+      "official_source": "FAR/SBA/DOL solicitation-derived check - local deterministic checklist",
+      "checked_at": "2026-07-08T02:04:47+00:00",
+      "ok": true,
+      "finding": "Set-aside: Total Small Business Set-Aside"
+    },
+    {
+      "rule_id": "LOS-APPLICABILITY",
+      "rule_version": "WFG-PHASE3-RULES-2026-06-24",
+      "official_source": "FAR/SBA/DOL solicitation-derived check - local deterministic checklist",
+      "checked_at": "2026-07-08T02:04:47+00:00",
+      "ok": true,
+      "finding": "LOS applies: True"
+    },
+    {
+      "rule_id": "LOS-SERVICE",
+      "rule_version": "WFG-PHASE3-RULES-2026-06-24",
+      "official_source": "FAR/SBA/DOL solicitation-derived check - local deterministic checklist",
+      "checked_at": "2026-07-08T02:04:47+00:00",
+      "ok": true,
+      "finding": "Prime + verified SSE labor/cost must satisfy service LOS; materials not universally excluded."
+    },
+    {
+      "rule_id": "MATERIALS-EXCLUSION",
+      "rule_version": "WFG-PHASE3-RULES-2026-06-24",
+      "official_source": "FAR/SBA/DOL solicitation-derived check - local deterministic checklist",
+      "checked_at": "2026-07-08T02:04:47+00:00",
+      "ok": false,
+      "finding": "Materials exclusion not permitted by selected rule/classification; do not apply universal exclusion."
+    },
+    {
+      "rule_id": "SSE-VERIFICATION",
+      "rule_version": "WFG-PHASE3-RULES-2026-06-24",
+      "official_source": "FAR/SBA/DOL solicitation-derived check - local deterministic checklist",
+      "checked_at": "2026-07-08T02:04:47+00:00",
+      "ok": false,
+      "finding": "Verified SSE: []; unverified/not counted: [24]"
+    },
+    {
+      "rule_id": "WAGE-DETERMINATION",
+      "rule_version": "WFG-PHASE3-RULES-2026-06-24",
+      "official_source": "FAR/SBA/DOL solicitation-derived check - local deterministic checklist",
+      "checked_at": "2026-07-08T02:04:47+00:00",
+      "ok": false,
+      "finding": "[LEGAL OR COMPLIANCE REVIEW REQUIRED] Wage determination/labor standards omission blocks compliance declaration"
+    },
+    {
+      "rule_id": "BONDING",
+      "rule_version": "WFG-PHASE3-RULES-2026-06-24",
+      "official_source": "FAR/SBA/DOL solicitation-derived check - local deterministic checklist",
+      "checked_at": "2026-07-08T02:04:47+00:00",
+      "ok": true,
+      "finding": "BONDING"
+    },
+    {
+      "rule_id": "INSURANCE",
+      "rule_version": "WFG-PHASE3-RULES-2026-06-24",
+      "official_source": "FAR/SBA/DOL solicitation-derived check - local deterministic checklist",
+      "checked_at": "2026-07-08T02:04:47+00:00",
+      "ok": true,
+      "finding": "INSURANCE"
+    },
+    {
+      "rule_id": "SECURITY-BADGING",
+      "rule_version": "WFG-PHASE3-RULES-2026-06-24",
+      "official_source": "FAR/SBA/DOL solicitation-derived check - local deterministic checklist",
+      "checked_at": "2026-07-08T02:04:47+00:00",
+      "ok": true,
+      "finding": "SECURITY-BADGING"
+    },
+    {
+      "rule_id": "SITE-VISIT",
+      "rule_version": "WFG-PHASE3-RULES-2026-06-24",
+      "official_source": "FAR/SBA/DOL solicitation-derived check - local deterministic checklist",
+      "checked_at": "2026-07-08T02:04:47+00:00",
+      "ok": true,
+      "finding": "SITE-VISIT"
+    },
+    {
+      "rule_id": "REPS-CERTS",
+      "rule_version": "WFG-PHASE3-RULES-2026-06-24",
+      "official_source": "FAR/SBA/DOL solicitation-derived check - local deterministic checklist",
+      "checked_at": "2026-07-08T02:04:47+00:00",
+      "ok": false,
+      "finding": "[LEGAL OR COMPLIANCE REVIEW REQUIRED] REPS-CERTS"
+    },
+    {
+      "rule_id": "AMENDMENTS",
+      "rule_version": "WFG-PHASE3-RULES-2026-06-24",
+      "official_source": "FAR/SBA/DOL solicitation-derived check - local deterministic checklist",
+      "checked_at": "2026-07-08T02:04:47+00:00",
+      "ok": true,
+      "finding": "AMENDMENTS"
+    },
+    {
+      "rule_id": "SUBMISSION-INSTRUCTIONS",
+      "rule_version": "WFG-PHASE3-RULES-2026-06-24",
+      "official_source": "FAR/SBA/DOL solicitation-derived check - local deterministic checklist",
+      "checked_at": "2026-07-08T02:04:47+00:00",
+      "ok": false,
+      "finding": "[LEGAL OR COMPLIANCE REVIEW REQUIRED] SUBMISSION-INSTRUCTIONS"
+    },
+    {
+      "rule_id": "PRIMARY-VITAL",
+      "rule_version": "WFG-PHASE3-RULES-2026-06-24",
+      "official_source": "FAR/SBA/DOL solicitation-derived check - local deterministic checklist",
+      "checked_at": "2026-07-08T02:04:47+00:00",
+      "ok": true,
+      "finding": "PRIMARY-VITAL"
+    },
+    {
+      "rule_id": "UNUSUAL-RELIANCE",
+      "rule_version": "WFG-PHASE3-RULES-2026-06-24",
+      "official_source": "FAR/SBA/DOL solicitation-derived check - local deterministic checklist",
+      "checked_at": "2026-07-08T02:04:47+00:00",
+      "ok": true,
+      "finding": "UNUSUAL-RELIANCE"
+    },
+    {
+      "rule_id": "NMR-RISK",
+      "rule_version": "WFG-PHASE3-RULES-2026-06-24",
+      "official_source": "FAR/SBA/DOL solicitation-derived check - local deterministic checklist",
+      "checked_at": "2026-07-08T02:04:47+00:00",
+      "ok": true,
+      "finding": "NMR-RISK"
+    }
+  ],
+  "blocking_flags": [
+    "Materials exclusion not permitted by selected rule/classification; do not apply universal exclusion.",
+    "Verified SSE: []; unverified/not counted: [24]",
+    "[LEGAL OR COMPLIANCE REVIEW REQUIRED] Wage determination/labor standards omission blocks compliance declaration",
+    "[LEGAL OR COMPLIANCE REVIEW REQUIRED] REPS-CERTS",
+    "[LEGAL OR COMPLIANCE REVIEW REQUIRED] SUBMISSION-INSTRUCTIONS"
+  ],
+  "compliant": false
+}

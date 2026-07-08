@@ -45,6 +45,8 @@ When information is missing, do not stop the entire workflow unless completion i
 - `[DOCUMENT MISSING]`
 - `[ASSUMPTION — MUST BE CONFIRMED]`
 
+Placeholder boundary (hard rule): placeholders are allowed only in initial intake scaffolds and internal analysis drafts. They are forbidden in the research artifacts consumed by the packet builder — `02_SOLICITATION_BRIEF.md`, `05_SCOPE_DECOMPOSITION.md`, `06_SUBCONTRACTOR_SOURCING_CRITERIA.md`, `attachment_manifest.md` — and in anything subcontractor-facing. A fact that cannot be found in the source documents is recorded in `04_MISSING_INFORMATION.md` together with the documents that were checked. "Continue the workflow" means do the research (download, extract, read the sources), not write placeholders past it: `scripts/wfg_research_preflight.py` must report PASS before `scripts/wfg_sub_bid_packet.py` will render a packet, and a research blocker is the correct output when required facts are genuinely unavailable.
+
 Every draft must clearly separate:
 
 - verified facts

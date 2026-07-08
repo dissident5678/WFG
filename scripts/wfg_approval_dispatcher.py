@@ -205,30 +205,122 @@ def task_body(approval: dict[str, Any], opp: dict[str, Any], downstream: dict[st
 
     if dispatch_type == "gate1_subcontractor_sourcing":
         specific = """
-Start the internal subcontractor-sourcing step for this approved pursue decision:
-1. Read the opportunity folder, extracted solicitation/PWS text, sourcing criteria, missing-info file, and risk register.
-2. Identify the actual trade(s), place of performance, due date, special credentials, base access, licensing, insurance, environmental/safety constraints, and any reasons outreach may be impractical.
-3. Search the internal subcontractor CRM first, then public/local sources only as needed.
-4. Save a candidate list and evidence under the opportunity folder, preferably `scope_sheets/subcontractor_candidates.csv` plus supporting evidence JSON/markdown.
-5. Build the subcontractor-facing bid packet using the integrated dynamic DOCX system. Run:
-   `python3 scripts/wfg_sub_bid_packet.py "{folder}" --docx --drive`
-   If Drive credentials/root folder are not configured, run the same command without `--drive` and flag Drive setup in the internal review summary.
-6. Draft subcontractor-facing quote request text. The outreach draft should link or attach only the approved subcontractor packet, not the internal review files.
-7. Create one GATE_2_PACKAGE approval packet covering all three components — packet (version/hash), exact recipient list, and exact message text — with local file paths, Google Drive review links when available, and the internal review summary. The packet must include a `Gate ID: GATE_2_PACKAGE` line. Send the approval packet with `scripts/send_wfg_approval_buttons.py`.
-8. If there are viable recipients but critical packet facts are missing, create a blocker/reconsideration note instead of contacting anyone.
-9. If the opportunity should not proceed despite Gate 1 approval, create a clear blocker/reconsideration note instead of contacting anyone.
+RULE FOR THIS TASK: Research first. Packet second. Outreach third. The packet
+builder is a RENDERER, not a research tool — it refuses to run until the
+research preflight passes, so do the phases in order. Do not improvise the
+order. Do not leave placeholders in research artifacts.
+
+PHASE A — RESEARCH (do all of this first; do not start Phase B early)
+
+A1. Open the opportunity folder `{folder}`. List what exists in `source/` and
+    `extracted-text/`. If `source/` is empty, download the SAM.gov listing
+    export and EVERY solicitation attachment into `source/` now.
+A2. Extract text from every PDF in `source/` into `extracted-text/<name>.extracted.txt`.
+    If a PDF is image-only, note that in `attachment_manifest.md` and flag it
+    for human reading — do not pretend you read it.
+A3. Read the documents IN THIS ORDER: amendments and Q&A first, then the
+    solicitation/RFQ and SOW/PWS, then price sheets/CLINs/bid schedules, then
+    wage determinations, then site-visit notices, then safety/access/bonding/
+    insurance/license requirements. Use SAM.gov metadata only as a last resort.
+A4. Write `02_SOLICITATION_BRIEF.md` using EXACTLY these labeled lines (the
+    packet builder parses these exact labels — format matters):
+      - Title: <exact project title from the solicitation>
+      - Agency: <buyer agency and office>
+      - Solicitation: <solicitation/RFQ number>
+      - Notice ID: <SAM.gov notice id>
+      - Place of performance: <city, state, site/base>
+      - Response deadline: <YYYY-MM-DD HH:MM with timezone>
+      - Questions due: <date/time or None>
+      - Site visit: <date/time and location, or None>
+      - POP: <period of performance>
+      - Pricing format: <CLIN table / lump sum / unit prices>
+    Then a `## Scope summary` section: one bullet per REAL work item from the
+    SOW/PWS. Then a `## Price sheet` section listing each CLIN/line item if the
+    solicitation has a price schedule.
+A5. Write `05_SCOPE_DECOMPOSITION.md` with a `## Work packages` section: one
+    bullet per work item a subcontractor must price, taken from the SOW/PWS.
+A6. Write `06_SUBCONTRACTOR_SOURCING_CRITERIA.md`: the trade(s) needed, required
+    licenses/bonding/insurance, service area, and disqualifiers.
+A7. Write `attachment_manifest.md`: one line per file in `source/` — name, what
+    it is, and whether a subcontractor needs it to price.
+A8. Write `04_MISSING_INFORMATION.md`: every fact you could NOT find, plus which
+    documents you checked. This is the ONLY research file where uncertainty and
+    scaffold markers are allowed. Never leave `[USER INPUT REQUIRED]`,
+    `[DOCUMENT MISSING]`, or any bracket placeholder in the other four files.
+A9. Run the preflight:
+      python3 scripts/wfg_research_preflight.py "{folder}" --queue-next
+    - If it prints FAIL: open `research_blocker.md`, fix each numbered item by
+      reading the source documents, and re-run until PASS. If a required fact
+      truly does not exist in any document, STOP HERE: leave the blocker in
+      place, post a concise status to the routed topic, and end this task.
+      DO NOT continue to Phase B. A blocker is the correct output.
+    - If it prints PASS: continue to Phase B.
+
+PHASE B — PACKET, RECIPIENTS, MESSAGE (only after preflight PASS)
+
+B1. Search the internal subcontractor CRM first, then public/local sources.
+    Save the candidate list as `scope_sheets/subcontractor_candidates.csv` with
+    columns: company, contact_name, email, phone, source_url, fit_evidence.
+    Every email must be a real mailbox — no "contact form", no "to verify",
+    no guessed addresses. A candidate without a real email goes in the file
+    with an empty email cell and is NOT a recipient.
+B2. Build the packet (the renderer will verify preflight itself):
+      python3 scripts/wfg_sub_bid_packet.py "{folder}" --docx --drive
+    If Drive is not configured, run without `--drive` and record a Drive-setup
+    blocker in the internal review summary.
+B3. Read `subcontractor_bid_packet/internal_review_summary.md` end to end. If it
+    lists missing critical items, fix the research and rebuild — do not proceed
+    with a packet marked "Needs human review".
+B4. Write the outreach message as a file with `Subject:` on the first line and
+    the body below. Reference only the subcontractor-facing packet. Never
+    attach or mention internal review files, margins, or WFG strategy.
+B5. Write the recipient list file (one JSON object per line or CSV) using only
+    candidates from B1 that have real email addresses.
+B6. Create the GATE_2_PACKAGE approval:
+      python3 scripts/wfg_outreach_cycle.py build-package "{folder}" --recipients <recipients-file> --message <message-file>
+    This writes the approval packet with `Gate ID: GATE_2_PACKAGE` and records
+    hashes. Send the buttons with scripts/send_wfg_approval_buttons.py.
+B7. Post a concise factual status to the routed topic. Then stop. Sending
+    anything to anyone requires GATE_2_SEND — never send from this task.
 """.strip()
     elif dispatch_type == "gate2_send_approval_prep":
         specific = """
-The outreach package (packet + recipients + message) is approved. Prepare the GATE_2_SEND approval packet:
-1. Verify the approved packet hash, recipient list, and message hash are unchanged; if anything changed, create a new GATE_2_PACKAGE cycle instead.
-2. Run the duplicate check against external_action_ledger and subcontractor_interactions for every recipient; disclose any prior contact with dates in the packet.
-3. Create the GATE_2_SEND approval packet (must include `Gate ID: GATE_2_SEND`) referencing the GATE_2_PACKAGE approval ID and all hashes, and send it with `scripts/send_wfg_approval_buttons.py`.
-Do not send anything to anyone at this step.
+The outreach package (packet + recipients + message) is approved. Prepare the
+GATE_2_SEND approval. Follow these steps exactly — do not send anything:
+
+1. Find the approved package version (gate2pkg-...) from the GATE_2_PACKAGE
+   approval packet in `{folder}/approvals/`.
+2. Create the send approval with the exact command:
+     python3 scripts/wfg_outreach_cycle.py create-send-approval <package-version-or-hash>
+   This verifies the GATE_2_PACKAGE approval matches the exact package hash,
+   runs the duplicate check against external_action_ledger and
+   subcontractor_interactions for every recipient, and writes the GATE_2_SEND
+   packet with `Gate ID: GATE_2_SEND`. If it refuses, report the reason —
+   do not work around it.
+3. If any recipient shows prior contact in the duplicate report, confirm the
+   packet discloses the prior contact and its date so Nick decides knowingly.
+4. Send the approval buttons with scripts/send_wfg_approval_buttons.py.
+5. Post a concise factual status to the routed topic. Then stop. Sending
+   happens only via `execute-send` AFTER GATE_2_SEND is approved, and only
+   through that script — never by hand, never from Gmail directly.
 """.strip()
     elif dispatch_type == "gate2_outreach_execution":
         specific = """
-Execute only the exact outreach package that was approved by GATE_2_SEND. Before each send, check external_action_ledger for the opportunity/recipient pair and stop on any prior contact. Verify Gmail sent-message metadata or form-confirmation evidence. Record proof in external_action_ledger, subcontractor_interactions, and the opportunity folder. Do not change recipients/message/packet without a new GATE_2_PACKAGE cycle.
+GATE_2_SEND is approved. Execute the send by script only — the script performs
+the approval-hash verification and per-recipient ledger duplicate check that
+you must never skip or reimplement by hand:
+
+1. Run exactly:
+     WFG_ALLOW_REAL_SEND=1 python3 scripts/wfg_outreach_cycle.py execute-send <package-version-or-hash> --execute --transport gmail
+2. If the script refuses (approval mismatch, changed hash, duplicate recipient),
+   report the refusal reason verbatim and stop. Do not edit anything to force
+   it through — a changed packet/message/recipient requires a new
+   GATE_2_PACKAGE cycle.
+3. After the run, confirm proof was recorded: external_action_ledger rows and
+   subcontractor_interactions rows for each recipient, and the send report in
+   the opportunity folder.
+4. Post a factual status to the routed topic: how many sent, to whom, proof
+   locations. Never claim a send happened unless the ledger row exists.
 """.strip()
     elif dispatch_type == "gate3_followup_execution":
         specific = """
@@ -277,6 +369,8 @@ Next gate expected: {downstream['next_gate']}
 
 Hard stop rules:
 - Do NOT send external emails, submit web forms, contact subcontractors/agencies, approve final price, sign, certify, spend money, upload sensitive documents, or submit any bid unless the exact downstream approval gate authorizes that exact action/version.
+- Research first. Packet second. Outreach third. Never generate a subcontractor packet before `scripts/wfg_research_preflight.py` reports PASS for this opportunity. A research blocker is a good outcome; a placeholder packet is a failure.
+- Never leave scaffold placeholders ([USER INPUT REQUIRED], [DOCUMENT MISSING], etc.) in 02/05/06/attachment_manifest — unknown facts go in 04_MISSING_INFORMATION.md with the documents you checked.
 - Save outputs in the opportunity folder and update the workflow database/events where possible.
 - Post/route a concise status update or approval packet using the WFG approval coordinator conventions.
 """

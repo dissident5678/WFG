@@ -20,8 +20,11 @@ import json
 import os
 import re
 import sqlite3
+import sys
 from pathlib import Path
 from typing import Any
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 PROJECT = Path(os.environ.get("WFG_PROJECT_DIR", str(Path(__file__).resolve().parents[1]))).resolve()
 DB = Path(os.environ.get("WFG_DB_PATH", str(PROJECT / "state" / "wfg_workflow.sqlite3"))).resolve()
@@ -371,6 +374,18 @@ def insert_approval(c: sqlite3.Connection, data: dict[str, Any], approval_id_val
 
 def build_package(opp: Path, recipients_path: Path, message_path: Path, *, dedupe_key: str = "") -> dict[str, Any]:
     opp = opp.resolve()
+    # Research-first barrier: a GATE_2_PACKAGE must never form on incomplete
+    # research. No bypass flag exists here on purpose — this path leads to a
+    # subcontractor-facing send.
+    import wfg_research_preflight as preflight
+    status = preflight.preflight_status(opp)
+    if not status["ok"]:
+        raise ValueError(
+            "REFUSED: cannot build a GATE_2_PACKAGE — research preflight has not passed. "
+            f"Reason: {status['reason']} "
+            f"Run: python3 scripts/wfg_research_preflight.py \"{opp}\" and fix research_blocker.md items until PASS, "
+            "then rebuild the subcontractor packet, then retry this package."
+        )
     dedupe_key = dedupe_key or infer_dedupe_key(opp)
     recipients = load_recipients(recipients_path)
     if not recipients:

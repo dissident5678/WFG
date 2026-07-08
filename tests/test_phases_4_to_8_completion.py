@@ -23,6 +23,39 @@ outreach = load_script("wfg_outreach_cycle")
 proposal = load_script("wfg_proposal_assembler")
 command = load_script("wfg_command_center")
 hardening = load_script("wfg_repo_hardening")
+research_preflight = load_script("wfg_research_preflight")
+
+RESEARCH_ARTIFACTS = {
+    "02_SOLICITATION_BRIEF.md": (
+        "# Brief\n\n"
+        "- Title: Phase 5 Test Opportunity\n"
+        "- Agency: Test Agency contracting office\n"
+        "- Solicitation: SOL-1\n"
+        "- Notice ID: testopp001\n"
+        "- Place of performance: Testville, MD\n"
+        "- Response deadline: 2026-08-01 12:00 ET\n"
+        "- Questions due: None\n"
+        "- Site visit: None\n"
+        "- POP: 12 months\n"
+        "- Pricing format: Lump sum\n\n"
+        "## Scope summary\n- Provide commercial janitorial service for Building 1 per PWS 3.1\n"
+    ),
+    "05_SCOPE_DECOMPOSITION.md": "# Scope\n\n## Work packages\n- Daily cleaning per PWS 3.1\n- Restroom sanitation per PWS 3.2\n",
+    "06_SUBCONTRACTOR_SOURCING_CRITERIA.md": "# Criteria\n\n- Trade: commercial janitorial\n- Serve Testville, MD\n",
+    "04_MISSING_INFORMATION.md": "# Missing\n\n- None outstanding.\n",
+    "attachment_manifest.md": "# Manifest\n\n- solicitation.txt — combined solicitation text; subs need PWS sections.\n",
+}
+
+
+def complete_research(opp: Path) -> None:
+    """Write real research artifacts and pass the preflight — the mandatory
+    first step of the pipeline since the research-first barrier."""
+    (opp / "source").mkdir(exist_ok=True)
+    (opp / "source" / "solicitation.txt").write_text("solicitation text", encoding="utf-8")
+    for name, text in RESEARCH_ARTIFACTS.items():
+        (opp / name).write_text(text, encoding="utf-8")
+    report = research_preflight.run(opp)
+    assert report["status"] == "PASS", report["failed"]
 
 
 class Phases4To8CompletionTests(unittest.TestCase):
@@ -79,6 +112,7 @@ class Phases4To8CompletionTests(unittest.TestCase):
         c.close()
 
     def _packet_inputs(self):
+        complete_research(self.opp)
         packet_dir = self.opp / "subcontractor_bid_packet"
         packet_dir.mkdir(parents=True)
         (packet_dir / "subcontractor_bid_packet.md").write_text("# Packet\nExternal safe packet.\n", encoding="utf-8")

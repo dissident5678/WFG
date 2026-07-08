@@ -64,8 +64,19 @@ Key sections for operators:
   Verification after implementation: focused Phase 4-8 tests pass, repo
   hardening check is clean.
 
+- Research-first barrier (2026-07-07, after live placeholder-packet failures):
+  `scripts/wfg_research_preflight.py` gates `wfg_sub_bid_packet.py` and
+  `wfg_outreach_cycle.py build-package`; FAIL writes `research_blocker.md` with
+  numbered fixes and the exact `02_SOLICITATION_BRIEF.md` line format. Gate 1
+  dispatcher task is now a two-phase checklist with a hard STOP on FAIL.
+  Placeholder boundary written into AGENTS.md, MARCUS.md,
+  nonbinding-draft-automation-policy.md, and the three live `.hermes` skills
+  (bid-packet, solicitation-reader, outreach-drafter). Tests:
+  `tests/test_research_preflight.py`.
+
 Next live/laptop actions: clone/pull this repo on the Hermes laptop, configure
 `.env`, install `requirements-dev.txt`, run CI-equivalent checks locally, re-run
 the DB migration there (idempotent), update the Telegram callback handler for
-revise/hold buttons, then test a real opportunity intake. Do not perform real
-outreach until exact GATE_2_PACKAGE and GATE_2_SEND approvals exist.
+revise/hold buttons, sync the updated `.hermes` skills to the live skills
+directory, then test a real opportunity intake. Do not perform real outreach
+until exact GATE_2_PACKAGE and GATE_2_SEND approvals exist.

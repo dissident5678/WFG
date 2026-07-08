@@ -866,12 +866,35 @@ def main() -> int:
     ap.add_argument("--sub-quote-due", default="", help="Override subcontractor quote deadline shown in packet")
     ap.add_argument("--no-google-doc", action="store_true", help="Deprecated compatibility flag; use --drive for private Drive upload. Ignored.")
     ap.add_argument("--share-anyone", action="store_true", help="Deprecated unsafe flag. This script does not create public links.")
+    ap.add_argument("--allow-incomplete-draft", action="store_true",
+                    help="Bypass the research preflight gate for an internal test/draft render only. "
+                         "Never use for a packet that could reach GATE_2_PACKAGE or a subcontractor.")
     args = ap.parse_args()
     opp = args.opportunity_folder.resolve()
     if not opp.exists():
         raise SystemExit(f"Opportunity folder not found: {opp}")
     if args.share_anyone:
         raise SystemExit("Refusing --share-anyone. WFG review bundles must stay private until explicit external approval and a separate send workflow.")
+    if not args.allow_incomplete_draft:
+        # Research-first barrier (consensus plan): this script is a packet
+        # renderer, not a research agent. It refuses to render until the
+        # research preflight has PASSed against the current artifacts.
+        import wfg_research_preflight as preflight
+        status = preflight.preflight_status(opp)
+        if not status["ok"]:
+            raise SystemExit(
+                "REFUSED: research preflight has not passed for this opportunity.\n"
+                f"Reason: {status['reason']}\n\n"
+                "Do this, in order:\n"
+                "  1. Complete the research artifacts (02_SOLICITATION_BRIEF.md, 05_SCOPE_DECOMPOSITION.md,\n"
+                "     06_SUBCONTRACTOR_SOURCING_CRITERIA.md, 04_MISSING_INFORMATION.md, attachment_manifest.md)\n"
+                "     from the real documents in source/ and extracted-text/.\n"
+                f"  2. Run: python3 scripts/wfg_research_preflight.py \"{opp}\"\n"
+                "  3. If it FAILS, open research_blocker.md and fix each numbered item; re-run until PASS.\n"
+                "  4. Only then re-run this packet builder.\n\n"
+                "A placeholder packet is worse than no packet. If you only need an internal test render,\n"
+                "use --allow-incomplete-draft explicitly (never for anything subcontractor-facing)."
+            )
     data, review, _ = build_packet_data(opp, args.sub_quote_due)
     out_dir = opp / args.output_dir
     result = write_outputs(opp, out_dir, data, review, docx=args.docx, drive=args.drive, template=args.template.resolve())

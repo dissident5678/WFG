@@ -1,0 +1,43 @@
+{
+  "inputs": {
+    "subcontractors": [
+      "quote-8c83c25aef9a35a1"
+    ],
+    "subtotal": "13200.00",
+    "overhead_pct": "0.10",
+    "g_and_a_pct": "0.05",
+    "contingency_pct": "0.10",
+    "profit_pct": "0.10",
+    "taxes": "0",
+    "bonding": "50",
+    "assumptions": [
+      "synthetic scenario pending approval"
+    ]
+  },
+  "formulas": {
+    "overhead": "subtotal * overhead_pct",
+    "g_and_a": "subtotal * g_and_a_pct",
+    "contingency": "subtotal * contingency_pct",
+    "profit": "(subtotal+overhead+g_and_a+contingency) * profit_pct",
+    "total": "subtotal+overhead+g_and_a+contingency+profit+taxes+bonding+insurance+materials+equipment+travel+permits+self_perform_labor"
+  },
+  "components": {
+    "subtotal": "13200.00",
+    "overhead": "1320.00",
+    "g_and_a": "660.00",
+    "contingency": "1320.00",
+    "profit": "1650.00",
+    "extras": "50.00"
+  },
+  "total": "18200.00",
+  "clin_mapping": {},
+  "assumptions": [
+    "synthetic scenario pending approval"
+  ],
+  "exclusions": [],
+  "source_quote_versions": [
+    "quote-8c83c25aef9a35a1"
+  ],
+  "pricing_version": "price-93ccd26545214ae3",
+  "content_hash": "93ccd26545214ae3749c4301e04982123e5579131876dc48bd6d256f1364a222"
+}

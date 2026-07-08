@@ -1049,12 +1049,25 @@ If any step in this loop requires a laptop, that is a bug against this plan.
 
 The current bid packet system should become the standard post-Gate-1 packet path.
 
+### Research-first barrier (amendment, 2026-07-07)
+
+Added after live operation showed Hermes generating placeholder packets by running the renderer before doing the research. The rule and its enforcement:
+
+- Rule: **Research first. Packet second. Outreach third. Approval before external action always.** A subcontractor bid packet is not a research tool; it is the output of completed research. A research blocker is a correct output; a placeholder packet is a failure.
+- `scripts/wfg_research_preflight.py` is the internal quality gate (not a human approval gate). It dry-runs the packet builder's own extraction and FAILS when any required fact would fall back to placeholder output (missing title/agency/deadline/location, generic scope, scaffold markers left in research artifacts, empty `source/`). It writes `research_preflight.json` (with artifact hashes) and, on FAIL, `research_blocker.md` with numbered fix instructions and the exact labeled-line format `02_SOLICITATION_BRIEF.md` must use.
+- `scripts/wfg_sub_bid_packet.py` refuses to render unless the preflight marker says PASS **and** the artifact hashes still match (a PASS goes stale when research files change). `--allow-incomplete-draft` exists only for internal test renders and must never feed a gate or a subcontractor.
+- `scripts/wfg_outreach_cycle.py build-package` refuses to create a GATE_2_PACKAGE without a current PASS. There is no bypass flag on that path.
+- Placeholder boundary: scaffold markers (`[USER INPUT REQUIRED]`, `[DOCUMENT MISSING]`, …) are allowed only in initial intake scaffolds and internal analysis drafts. They are forbidden in `02_SOLICITATION_BRIEF.md`, `05_SCOPE_DECOMPOSITION.md`, `06_SUBCONTRACTOR_SOURCING_CRITERIA.md`, and `attachment_manifest.md`; unknown facts go in `04_MISSING_INFORMATION.md` with the documents checked. This boundary is also written into `AGENTS.md`, `MARCUS.md`, and `nonbinding-draft-automation-policy.md`.
+- The Gate 1 dispatcher task is an explicit two-phase checklist (Phase A research with a hard STOP on preflight FAIL; Phase B packet/recipients/message only after PASS), and the pipeline order is codified in `AGENTS.md` ("Opportunity pipeline order (hard rule)").
+- Tests: `tests/test_research_preflight.py` proves empty/scaffold/missing-deadline/generic-scope research fails, complete research passes, a changed artifact stales the PASS, the builder refuses without PASS, and GATE_2_PACKAGE cannot form on incomplete research.
+
 ### Authoritative files
 
 ```text
 templates/subcontractor_bid_packet/WFG_Subcontractor_Bid_Packet_Template.docx
 templates/subcontractor_bid_packet/Hermes_Subcontractor_Bid_Packet_Instructions.docx
 templates/subcontractor_bid_packet/README.md
+scripts/wfg_research_preflight.py
 scripts/wfg_sub_bid_packet.py
 /Users/nickwright87/WFG/wfg_upgraded/.hermes/skills/business-ops/wfg-subcontractor-bid-packet/SKILL.md
 ```
@@ -1710,6 +1723,10 @@ Hermes must stop using these old behaviors:
 - Treating a skill file as if it is a full subagent worker.
 - Treating final package approval as automatic submission.
 - Treating old `/home/nick/workspace/gov-contracting` path defaults as current except through compatibility wrappers.
+- Running `scripts/wfg_sub_bid_packet.py` before `scripts/wfg_research_preflight.py` reports PASS. The packet builder is a renderer, not a research agent.
+- Leaving scaffold placeholders in `02_SOLICITATION_BRIEF.md`, `05_SCOPE_DECOMPOSITION.md`, `06_SUBCONTRACTOR_SOURCING_CRITERIA.md`, or `attachment_manifest.md`. Unknown facts go in `04_MISSING_INFORMATION.md` with the documents checked.
+- Building any competing packet document (Google Doc or otherwise) outside `scripts/wfg_sub_bid_packet.py`.
+- Sending outreach by any path other than `scripts/wfg_outreach_cycle.py execute-send` after a recorded GATE_2_SEND approval — including "Nick said go ahead" in chat, which must be recorded as the GATE_2_SEND decision first.
 
 ### Required new behavior
 
@@ -1728,8 +1745,18 @@ For every selected opportunity:
 
 ### Canonical packet command
 
+Step 1 is always the research preflight. The packet builder refuses to run without a current PASS:
+
 ```bash
 cd /home/nick/workspace/wfg-gov-contracting-v2
+python3 scripts/wfg_research_preflight.py /path/to/opportunity-folder --queue-next
+```
+
+If it prints FAIL: fix each numbered item in `research_blocker.md` from the source documents and re-run until PASS. If required facts genuinely do not exist in any document, the blocker is the deliverable — stop there.
+
+Only after PASS:
+
+```bash
 WFG_PROJECT_DIR=/home/nick/workspace/wfg-gov-contracting-v2 \
 python3 scripts/wfg_sub_bid_packet.py /path/to/opportunity-folder --docx --drive
 ```

@@ -56,7 +56,9 @@ When Nick directs Marcus to intake a Wright Foster Group opportunity, Marcus sho
 
 Internal drafting may include intake, bid/no-bid scorecards, solicitation briefs, compliance matrices, missing-information lists, sourcing criteria/candidate lists, draft quote requests, draft emails/messages/call scripts, validation checklists, quote-comparison and exclusion analysis, preliminary pricing worksheets, suggested overhead/contingency/profit ranges, LOS analysis, technical proposal drafts, verified-only past-performance drafts, required-form checklists, compliance audits, red-team reviews, submission checklists, draft submission emails, and draft follow-up/outcome-tracking messages.
 
-Use placeholders such as `[USER INPUT REQUIRED]`, `[PRICE NOT APPROVED]`, `[SUBCONTRACTOR NOT VERIFIED]`, `[DOCUMENT MISSING]`, and `[ASSUMPTION — MUST BE CONFIRMED]` instead of stopping the whole workflow when possible. Clearly separate verified facts, assumptions, estimates, missing information, and risks.
+Use placeholders such as `[USER INPUT REQUIRED]`, `[PRICE NOT APPROVED]`, `[SUBCONTRACTOR NOT VERIFIED]`, `[DOCUMENT MISSING]`, and `[ASSUMPTION — MUST BE CONFIRMED]` instead of stopping the whole workflow — but only where placeholders are allowed. They are allowed in initial intake scaffolds and internal analysis drafts. They are forbidden in the research artifacts the packet builder consumes (`02_SOLICITATION_BRIEF.md`, `05_SCOPE_DECOMPOSITION.md`, `06_SUBCONTRACTOR_SOURCING_CRITERIA.md`, `attachment_manifest.md`) and in anything subcontractor-facing; unknown facts go in `04_MISSING_INFORMATION.md` with the documents checked. Clearly separate verified facts, assumptions, estimates, missing information, and risks.
+
+Pipeline order is fixed and tool-enforced: research the source documents first, pass `scripts/wfg_research_preflight.py`, and only then build the subcontractor packet (`scripts/wfg_sub_bid_packet.py`) and outreach package (`scripts/wfg_outreach_cycle.py`). A research blocker is a correct output; a placeholder packet is a failure. See "Opportunity pipeline order (hard rule)" in AGENTS.md.
 
 ## Boundaries
 

@@ -2,6 +2,15 @@
 
 This upgrade turns the current WFG Hermes system from a collection of helpful scripts into a controlled operating loop: discover, analyze, draft, package, request approval, execute only the approved next step, then record proof.
 
+> **Amendment 2026-07-07 — research-first barrier.** The packet builder is a
+> renderer, not a research agent. `scripts/wfg_research_preflight.py` must
+> report PASS before `scripts/wfg_sub_bid_packet.py` will render a packet and
+> before `scripts/wfg_outreach_cycle.py` will create a GATE_2_PACKAGE. A FAIL
+> writes `research_blocker.md` with numbered fix steps — that blocker is the
+> correct output when research is incomplete. Authoritative details: consensus
+> plan Section 8 ("Research-first barrier") and AGENTS.md ("Opportunity
+> pipeline order (hard rule)").
+
 ## What changed
 
 ### 1. Subcontractor bid packet system integrated

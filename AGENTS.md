@@ -20,9 +20,31 @@ Never treat an AI recommendation as company approval. Any binding decision requi
 
 ## Non-binding draft automation rule
 
-When Nick directs Marcus to intake a Wright Foster Group opportunity, automatically continue through all non-binding internal drafting work that can be completed without human authorization. Do not pause after every internal step. Create, revise, analyze, and store internal drafts until reaching a true authorization gate. Use placeholders such as `[USER INPUT REQUIRED]`, `[PRICE NOT APPROVED]`, `[SUBCONTRACTOR NOT VERIFIED]`, `[DOCUMENT MISSING]`, and `[ASSUMPTION — MUST BE CONFIRMED]` when facts are missing, and clearly separate verified facts, assumptions, estimates, risks, and missing information.
+When Nick directs Marcus to intake a Wright Foster Group opportunity, automatically continue through all non-binding internal drafting work that can be completed without human authorization. Do not pause after every internal step. Create, revise, analyze, and store internal drafts until reaching a true authorization gate.
+
+Placeholder boundary (this is a hard rule, not a style preference):
+
+- Placeholders such as `[USER INPUT REQUIRED]`, `[PRICE NOT APPROVED]`, `[SUBCONTRACTOR NOT VERIFIED]`, `[DOCUMENT MISSING]`, and `[ASSUMPTION — MUST BE CONFIRMED]` are allowed ONLY in the initial intake scaffolds (the `00`–`12` drafts as first written) and in internal analysis drafts that no downstream tool consumes yet (pricing worksheets before quotes exist, proposal skeletons).
+- Placeholders are FORBIDDEN in the five research artifacts the packet builder consumes: `02_SOLICITATION_BRIEF.md`, `05_SCOPE_DECOMPOSITION.md`, `06_SUBCONTRACTOR_SOURCING_CRITERIA.md`, `attachment_manifest.md` — and in anything subcontractor-facing. A fact that cannot be found in the source documents goes into `04_MISSING_INFORMATION.md` with a list of the documents checked. That file is the only research artifact where uncertainty belongs.
+- "Continue without pausing" means do the research — download, extract, and read the source documents — not skip it. Filling a research artifact with placeholders is not progress; it is a silent failure that `scripts/wfg_research_preflight.py` will catch and block.
 
 The detailed policy is `/home/nick/workspace/wfg-gov-contracting-v2/nonbinding-draft-automation-policy.md` and controls opportunity work unless Nick gives a narrower instruction for a specific matter.
+
+## Opportunity pipeline order (hard rule)
+
+Research first. Packet second. Outreach third. Approval before external action always. The steps below run in this exact order for every pursued opportunity; the tooling enforces the barriers, so do not try to shortcut them:
+
+1. Intake: create the opportunity folder and download the SAM.gov export and EVERY solicitation attachment into `source/`.
+2. Extract: produce `extracted-text/<name>.extracted.txt` for every PDF. Image-only PDFs get flagged in `attachment_manifest.md` for human reading.
+3. Read the sources in this order: amendments and Q&A, then solicitation/RFQ and SOW/PWS, then price sheets/CLINs, then wage determinations, then site-visit and safety/access/bonding/insurance requirements. SAM.gov metadata is a last resort.
+4. Write the research artifacts (`02`, `05`, `06`, `attachment_manifest.md`, `04`) from those sources, using the exact labeled-line format in the Gate 1 task instructions and `scripts/wfg_research_preflight.py`.
+5. Run `python3 scripts/wfg_research_preflight.py "<opportunity_folder>" --queue-next`. FAIL means fix `research_blocker.md` items or stop with the blocker as the output. Never work around a FAIL.
+6. Only after PASS: build the packet with `python3 scripts/wfg_sub_bid_packet.py "<opportunity_folder>" --docx --drive` (the renderer independently refuses without a current PASS).
+7. Build the outreach package and GATE_2_PACKAGE with `python3 scripts/wfg_outreach_cycle.py build-package ...`.
+8. After GATE_2_PACKAGE approval: `create-send-approval` for GATE_2_SEND.
+9. After GATE_2_SEND approval: `execute-send` — the only path that ever sends anything.
+
+A subcontractor bid packet is not a research tool. It is the output of completed research.
 
 ## Approval Coordinator routing rule
 
